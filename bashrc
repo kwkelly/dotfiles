@@ -185,6 +185,9 @@ if [[ "$HOSTNAME" = *ices* ]]; then
 
 	module load sl6 
 	module load intel/12.1
+	module load git
+
+	unset SSH_ASKPASS
 fi
 
 # just for ronaldo, may have to add more later
