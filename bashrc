@@ -131,7 +131,8 @@ fi
 
 # Start on conditional stuff
 
-if [ "$HOSTNAME" = "curie.ices.utexas.edu" ]; then 
+if [[ "$HOSTNAME" = *ices* ]]; then 
+	echo "ices"
 	# ~/.bashrc
 
 	# used for bash non-login shells.
@@ -184,8 +185,11 @@ if [ "$HOSTNAME" = "curie.ices.utexas.edu" ]; then
 
 	module load sl6 
 	module load intel/12.1
+fi
+
+# just for ronaldo, may have to add more later
+if [[ $HOSTNAME = *ronaldo* ]]; then
 	module load mkl/12.1
 	module load autoconf/2.6.8
 	module load openmpi/1.4.4
 fi
-
