@@ -56,6 +56,7 @@ syntax on
 set autoindent
 set smartindent
 set mouse=a
+set shiftwidth=2
 
 "map <ScrollWheelUp> k
 "map <ScrollWheelDown> j

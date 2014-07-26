@@ -131,8 +131,7 @@ fi
 
 # Start on conditional stuff
 
-if [[ "$HOSTNAME" = *ices* ]]; then 
-	echo "ices"
+if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then 
 	# ~/.bashrc
 
 	# used for bash non-login shells.
@@ -175,7 +174,7 @@ if [[ "$HOSTNAME" = *ices* ]]; then
 	# but it's not easy without priveleges.
 	PATH=$PATH:~/.local/bin:/workspace/local/bin
 	LIBRARY_PATH=$PATH:~/.local/lib:/workspace/local/lib
-	LD_LIBRARY_PATH=~$LD_LIBRARY_PATH:~/.local/lib:/workspace/local/lib:/org/groups/padas/packages/petsc-3.4.3-icc-complex/lib/
+	LD_LIBRARY_PATH=~$LD_LIBRARY_PATH:~/.local/lib:/workspace/local/lib:/org/groups/padas/packages/petsc-3.4.3-icc-complex/lib
 	PYTHONPATH=$PYTHONPATH:/workspace/local/lib/python2.6/site-packages
 
 	export LD_LIBRARY_PATH
@@ -183,7 +182,6 @@ if [[ "$HOSTNAME" = *ices* ]]; then
 	export LIBRARY_PATH
 	export PYTHONPATH
 
-	module load sl6 
 	module load intel/12.1
 	module load git
 
@@ -193,6 +191,20 @@ fi
 # just for ronaldo, may have to add more later
 if [[ $HOSTNAME = *ronaldo* ]]; then
 	module load mkl/12.1
-	module load autoconf/2.6.8
 	module load openmpi/1.4.4
+	export PETSC_DIR=/org/groups/padas/packages/petsc-3.4.3-icc-complex
+fi
+
+
+if [[ $HOSTNAME = *curie* ]]; then
+	module load sl6 
+	module load mkl
+	module load autotools
+	module load openmpi
+	module load paraview
+fi
+
+if [[ $HOSTNAME = *compute* ]]; then
+	module load mkl
+	module load openmpi
 fi
