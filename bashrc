@@ -41,7 +41,88 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+##### Machine conditional
 
+if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then 
+	# ~/.bashrc
+
+	# used for bash non-login shells.
+	# non-login shells include:
+	# * X sessions (xdm, gdm, kdm)
+	# * X Terminals (xterm, konsole, gnome-terminal)
+	# * running remote commands via ssh
+
+	# NOTE: some programs (ie, winscp) fail if this generates any output.
+
+	# first, source the system bashrc
+	if [ -r /etc/bashrc ]; then
+	    . /etc/bashrc
+	fi
+
+	# MAIL is used by mutt
+	export MAIL=/mail/${USER}/Maildir/
+
+	# default printer: change this to suit your needs.
+	# pr3swd is the duplex queue on our black and white laser printer in the
+	# southwest quadrant of the 3rd floor of ICES.
+	export PRINTER=cp3se
+
+	# default editor: this is used by svn, etc.
+	# the only safe default for EDITOR is one which instructs the user how to quit.
+	# most users will change this to vim or emacs.
+	export EDITOR=vim
+
+	# uncomment this to use a prompt which indicates exit status
+	#if [ -r /etc/bash/prompt ]; then
+	#    . /etc/bash/prompt
+	#fi
+
+	# pine aliases
+	alias alpine='alpine -passfile ~/.pinepass'
+	alias pine='alpine -passfile ~/.pinepass'
+
+
+	# Add local dir to install location. Probably not the best way to do this,
+	# but it's not easy without priveleges.
+	PATH=$PATH:~/.local/bin:/workspace/local/bin
+	LIBRARY_PATH=$PATH:~/.local/lib:/workspace/local/lib
+	LD_LIBRARY_PATH=~$LD_LIBRARY_PATH:~/.local/lib:/workspace/local/lib:/org/groups/padas/packages/petsc-3.4.3-icc-complex/lib
+	PYTHONPATH=$PYTHONPATH:/workspace/local/lib/python2.6/site-packages
+
+	export LD_LIBRARY_PATH
+	export PATH
+	export LIBRARY_PATH
+	export PYTHONPATH
+
+	module load intel/12.1
+	module load git
+
+	unset SSH_ASKPASS
+fi
+
+# just for ronaldo, may have to add more later
+if [[ $HOSTNAME = *ronaldo* ]]; then
+	module load mkl/12.1
+	module load openmpi/1.4.4
+	export PETSC_DIR=/org/groups/padas/packages/petsc-3.4.3-icc-complex
+fi
+
+
+if [[ $HOSTNAME = *curie* ]]; then
+	module load sl6 
+	module load mkl
+	module load autotools
+	module load openmpi
+	module load paraview
+fi
+
+if [[ $HOSTNAME = *compute* ]]; then
+	module load mkl
+	module load openmpi
+fi
+
+
+##### End machine conditional stuff
 
 # ex - archive extractor
 # usage: ex <file>
@@ -131,80 +212,3 @@ fi
 
 # Start on conditional stuff
 
-if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then 
-	# ~/.bashrc
-
-	# used for bash non-login shells.
-	# non-login shells include:
-	# * X sessions (xdm, gdm, kdm)
-	# * X Terminals (xterm, konsole, gnome-terminal)
-	# * running remote commands via ssh
-
-	# NOTE: some programs (ie, winscp) fail if this generates any output.
-
-	# first, source the system bashrc
-	if [ -r /etc/bashrc ]; then
-	    . /etc/bashrc
-	fi
-
-	# MAIL is used by mutt
-	export MAIL=/mail/${USER}/Maildir/
-
-	# default printer: change this to suit your needs.
-	# pr3swd is the duplex queue on our black and white laser printer in the
-	# southwest quadrant of the 3rd floor of ICES.
-	export PRINTER=cp3se
-
-	# default editor: this is used by svn, etc.
-	# the only safe default for EDITOR is one which instructs the user how to quit.
-	# most users will change this to vim or emacs.
-	export EDITOR=vim
-
-	# uncomment this to use a prompt which indicates exit status
-	#if [ -r /etc/bash/prompt ]; then
-	#    . /etc/bash/prompt
-	#fi
-
-	# pine aliases
-	alias alpine='alpine -passfile ~/.pinepass'
-	alias pine='alpine -passfile ~/.pinepass'
-
-
-	# Add local dir to install location. Probably not the best way to do this,
-	# but it's not easy without priveleges.
-	PATH=$PATH:~/.local/bin:/workspace/local/bin
-	LIBRARY_PATH=$PATH:~/.local/lib:/workspace/local/lib
-	LD_LIBRARY_PATH=~$LD_LIBRARY_PATH:~/.local/lib:/workspace/local/lib:/org/groups/padas/packages/petsc-3.4.3-icc-complex/lib
-	PYTHONPATH=$PYTHONPATH:/workspace/local/lib/python2.6/site-packages
-
-	export LD_LIBRARY_PATH
-	export PATH
-	export LIBRARY_PATH
-	export PYTHONPATH
-
-	module load intel/12.1
-	module load git
-
-	unset SSH_ASKPASS
-fi
-
-# just for ronaldo, may have to add more later
-if [[ $HOSTNAME = *ronaldo* ]]; then
-	module load mkl/12.1
-	module load openmpi/1.4.4
-	export PETSC_DIR=/org/groups/padas/packages/petsc-3.4.3-icc-complex
-fi
-
-
-if [[ $HOSTNAME = *curie* ]]; then
-	module load sl6 
-	module load mkl
-	module load autotools
-	module load openmpi
-	module load paraview
-fi
-
-if [[ $HOSTNAME = *compute* ]]; then
-	module load mkl
-	module load openmpi
-fi
