@@ -18,7 +18,7 @@ Plugin 'jcf/vim-latex'
 "
 Plugin 'fholgado/minibufexpl.vim'
 "
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
 "
 "Plugin 'scrooloose/syntastic'
 " " plugin from http://vim-scripts.org/vim/scripts.html
