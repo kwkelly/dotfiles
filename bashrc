@@ -77,6 +77,7 @@ if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
 	#    . /etc/bash/prompt
 	#fi
 
+
 	# pine aliases
 	alias alpine='alpine -passfile ~/.pinepass'
 	alias pine='alpine -passfile ~/.pinepass'
@@ -152,6 +153,8 @@ ex ()
   fi
 }
 
+# fix term type
+export TERM=xterm
 
 # prompt
 # The escape sequence \e[0;31m for instance, gets sucked up by the terminal, 
@@ -196,7 +199,7 @@ if hash tmux 2>/dev/null; then
 else
 	echo "Can not find tmux"
 fi
-	
+
 # Some aliases for some common things
 if ! ls --group-directories-first 1>/dev/null 2>&1; then
 	alias grep='grep --color=tty -d skip'
