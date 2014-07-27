@@ -121,6 +121,10 @@ if [[ $HOSTNAME = *compute* ]]; then
 	module load openmpi
 fi
 
+if [[ $HOSTNAME = *darwin* ]]; then
+  # os x likes to make ctrl-o not do anything for some reason...
+  stty discard undef
+fi
 
 ##### End machine conditional stuff
 
@@ -208,7 +212,3 @@ else
 	alias df='df -h'                          # human-readable sizes
 	alias free='free -m'                      # show sizes in MB
 fi
-
-
-# Start on conditional stuff
-
