@@ -110,6 +110,6 @@ endtry
 
 " os x likes to make backspace not work for some reason... hopefull this won't
 " screw anything else up
-backspace=indent,eol,start
+set backspace=indent,eol,start
 
 
