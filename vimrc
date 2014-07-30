@@ -57,6 +57,8 @@ set autoindent
 set smartindent
 set mouse=a
 set shiftwidth=2
+set tabstop=2
+au BufNewFile,BufRead *.txx set filetype=cpp
 
 "map <ScrollWheelUp> k
 "map <ScrollWheelDown> j
