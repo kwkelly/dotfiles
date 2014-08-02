@@ -105,6 +105,7 @@ fi
 if [[ $HOSTNAME = *ronaldo* ]]; then
 	module load mkl/12.1
 	module load openmpi/1.4.4
+	module load autoconf
 	export PETSC_DIR=/org/groups/padas/packages/petsc-3.4.3-icc-complex
 fi
 
@@ -115,6 +116,7 @@ if [[ $HOSTNAME = *curie* ]]; then
 	module load autotools
 	module load openmpi
 	module load paraview
+	module load matlab
 fi
 
 if [[ $HOSTNAME = *compute* ]]; then
