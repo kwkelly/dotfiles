@@ -18,6 +18,8 @@ Plugin 'jcf/vim-latex'
 "
 Plugin 'fholgado/minibufexpl.vim'
 "
+Plugin 'kien/ctrlp.vim'
+"
 "Plugin 'Valloric/YouCompleteMe'
 "
 "Plugin 'scrooloose/syntastic'
@@ -58,6 +60,11 @@ set smartindent
 set mouse=a
 set shiftwidth=2
 set tabstop=2
+set smarttab
+set nohlsearch " Don't continue to highlight searched phrases.
+set incsearch " But do highlight as you type your search.
+set cinkeys-=0# " Indent #pragma lines as you would regular code
+set ruler " Always show info along bottom.
 au BufNewFile,BufRead *.txx set filetype=cpp
 
 "map <ScrollWheelUp> k
@@ -114,4 +121,10 @@ endtry
 " screw anything else up
 set backspace=indent,eol,start
 
+" Ctrl-P options
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
 
