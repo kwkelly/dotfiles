@@ -112,9 +112,7 @@ fi
 
 if [[ $HOSTNAME = *curie* ]]; then
 	module load sl6 
-	module load mkl
 	module load autotools
-	module load openmpi
 	module load paraview
 	module load matlab
 fi
