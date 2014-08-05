@@ -155,9 +155,6 @@ ex ()
   fi
 }
 
-# fix term type
-export TERM=xterm
-
 # prompt
 # The escape sequence \e[0;31m for instance, gets sucked up by the terminal, 
 # which in turn turns the following text red, but bash doesn't know that. So,
