@@ -95,7 +95,6 @@ if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
 	export LIBRARY_PATH
 	export PYTHONPATH
 
-	module load intel/12.1
 	module load git
 
 	unset SSH_ASKPASS
@@ -103,6 +102,7 @@ fi
 
 # just for ronaldo, may have to add more later
 if [[ $HOSTNAME = *ronaldo* ]]; then
+	module load intel/12.1
 	module load mkl/12.1
 	module load openmpi/1.4.4
 	module load autoconf
@@ -118,6 +118,7 @@ if [[ $HOSTNAME = *curie* ]]; then
 fi
 
 if [[ $HOSTNAME = *compute* ]]; then
+	module load intel/12.1
 	module load mkl
 	module load openmpi
 fi

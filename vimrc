@@ -120,14 +120,18 @@ endtry
 " os x likes to make backspace not work for some reason... hopefull this won't
 " screw anything else up
 set backspace=indent,eol,start
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 
 " Ctrl-P options
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
 
-hi Constant ctermfg=Yellow
-hi Statement ctermfg=Green
-hi LineNr ctermfg=LightYellow
+
+set background=dark
+" hi Constant ctermfg=Yellow
+" hi Statement ctermfg=Green
+" hi LineNr ctermfg=LightYellow
+" 
+" hi Visual ctermbg=Black ctermfg=NONE
