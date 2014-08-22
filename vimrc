@@ -103,7 +103,7 @@ try
 	let g:clang_complete_auto = 1
 	let g:clang_complete_copen = 1
 	let g:clang_library_path = "/usr/lib/"
-	nmap <C-P> :clang_close-preview<CR>
+" nmap <C-P> :clang_close-preview<CR>
 catch
 endtry
 
