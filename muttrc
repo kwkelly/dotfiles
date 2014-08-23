@@ -21,6 +21,9 @@ set net_inc=5
 
 set sort=threads
 
+bind attach <return>    view-mailcap
+
+set text_flowed=yes
 
 auto_view text/html
 alternative_order text/plain text/enriched text/html

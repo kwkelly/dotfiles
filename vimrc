@@ -135,3 +135,7 @@ set background=dark
 " hi LineNr ctermfg=LightYellow
 " 
 " hi Visual ctermbg=Black ctermfg=NONE
+
+" Spellcheck for emails
+autocmd FileType mail set spell
+autocmd FileType mail set fo+=aw
