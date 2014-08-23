@@ -1,8 +1,9 @@
 set spoolfile="imap://keith@ices.utexas.edu/INBOX"
 
-set record="=Sent"
-set postponed="=Drafts
 set folder="imap://keith@ices.utexas.edu/"
+set copy=yes
+set record="=Sent"
+set postponed="=Drafts"
 
 # always use SSL when connecting to a server
 set ssl_force_tls=yes
@@ -24,6 +25,7 @@ set sort=threads
 bind attach <return>    view-mailcap
 
 set text_flowed=yes
+
 
 auto_view text/html
 alternative_order text/plain text/enriched text/html
