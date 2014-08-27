@@ -26,6 +26,8 @@ bind attach <return>    view-mailcap
 
 set text_flowed=yes
 
+set from="Keith Kelly <keith@ices.utexas.edu>"
+
 
 auto_view text/html
 alternative_order text/plain text/enriched text/html
