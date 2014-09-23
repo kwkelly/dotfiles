@@ -178,6 +178,7 @@ if hash ranger 2>/dev/null; then
 	bind '"\C-o":"ranger-cd\C-m"'
 else
 #	echo "Can not find ranger"
+	:
 fi
 
 
@@ -196,6 +197,7 @@ if hash tmux 2>/dev/null; then
 	fi
 else
 #	echo "Can not find tmux"
+	:
 fi
 
 # Some aliases for some common things
