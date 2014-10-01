@@ -43,11 +43,11 @@ macro index,pager D "<clear-flag>N<save-message>+Trash<enter>i" "move message to
 # Move message to the archive
 macro index,pager A "<clear-flag>N<save-message>+Archive<enter>" "move message to the archive"
 
-color status blue black
+color status blue default
 #color hdrdefault green black
 
-color index	red black ~D
-color index	magenta black ~T
+color index	red default ~D
+color index	magenta default ~T
 
 color indicator white blue
 #When you operate on a message, by default, Mutt then takes you to the next message automatically. But if the next message includes a big attachment you will be stuck until Mutt finishes downloading the entire attachment, which might take a while and be annoying if you are working online, i.e. with an IMAP mail account. You can prevent this by unsetting the `resolve' variable, i.e.
