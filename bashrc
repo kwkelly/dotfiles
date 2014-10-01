@@ -128,7 +128,7 @@ if [[ $HOSTNAME = *darwin* ]] ;then
   stty discard undef
 fi
 
-if [[ $HOSTNAME = *wireless* ]] ;then
+if [[ $HOSTNAME = *helmholtz* ]] ;then
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 fi
 ##### End machine conditional stuff
