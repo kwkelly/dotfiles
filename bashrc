@@ -132,6 +132,10 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
   # os x likes to make ctrl-o not do anything for some reason...
   stty discard undef
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+	# use vimpager
+	export PAGER=vimpager
+	alias less=$PAGER
+	alias zless=$PAGER
 fi
 ##### End machine conditional stuff
 
