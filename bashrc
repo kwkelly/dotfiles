@@ -136,6 +136,10 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
 	export PAGER=vimpager
 	alias less=$PAGER
 	alias zless=$PAGER
+	# add colored output to gcc
+	export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+	# add matlab bin to path
+	export PATH=$PATH:/Applications/MATLAB_R2014a.app/bin
 fi
 ##### End machine conditional stuff
 
