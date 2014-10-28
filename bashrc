@@ -132,15 +132,21 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
   # os x likes to make ctrl-o not do anything for some reason...
   stty discard undef
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
 	# use vimpager
 	export PAGER=vimpager
 	alias less=$PAGER
 	alias zless=$PAGER
+
 	# add colored output to gcc
 	export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
 	# add matlab bin to path
 	export PATH=$PATH:/Applications/MATLAB_R2014a.app/bin
+
+	# vlc to path
 	alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
+	alias cvlc='vlc -I rc'
 fi
 ##### End machine conditional stuff
 
