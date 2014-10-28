@@ -107,6 +107,7 @@ if [[ $HOSTNAME = *ronaldo* ]]; then
 	module load openmpi/1.4.4
 	module load autoconf
 	export PETSC_DIR=/org/groups/padas/packages/petsc-3.4.3-icc-complex
+	export FFTW_DIR=/org/groups/padas/packages/fftw/
 fi
 
 
