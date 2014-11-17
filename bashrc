@@ -203,24 +203,6 @@ else
 fi
 
 
-# Start tmux if it is not only running. Start only one instance. Reattach if possible
-if hash tmux 2>/dev/null; then
-	if [[ $- == *i* ]] # check if interactive shell, if not, don't open tmux
-	then
-		if ! [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" || -n "$SSH_CONNECTION" ]]  # Don't open TMUX if connecting via ssh... needs fixin
-		then
-			if which tmux 2>&1 >/dev/null
-			then
-				#if not inside a tmux session, and if no session is started, start a new session
-				test -z "$TMUX" && (tmux new-session || tmux attach)
-			fi
-		fi
-	fi
-else
-#	echo "Can not find tmux"
-	:
-fi
-
 # Some aliases for some common things
 if ! ls --group-directories-first 1>/dev/null 2>&1; then
 	alias grep='grep --color=tty -d skip'
