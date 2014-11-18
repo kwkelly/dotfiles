@@ -20,7 +20,11 @@ set header_cache=~/.hcache
 # Display download progress every 5K
 set net_inc=5
 
-set sort=threads
+set smtp_url="smtp://keith@ices.utexas.edu:25/"
+set ssl_force_tls = yes
+set ssl_starttls = yes
+
+set sort=thread
 
 bind attach <return>    view-mailcap
 
