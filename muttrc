@@ -59,3 +59,5 @@ unset resolve
 
 bind pager k previous-line
 bind pager j next-line
+
+set message_cachedir="~/.mutt_msgcache"
