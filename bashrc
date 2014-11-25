@@ -41,6 +41,13 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+function title {
+	echo -ne "\033]0;"$*"\007"
+}
+
+# allow forward stepping through history
+stty -ixon
 ##### Machine conditional
 
 if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then 
@@ -148,6 +155,9 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
 	# vlc to path
 	alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 	alias cvlc='vlc -I rc'
+	# brew caveat for gdk-pixbuf
+	export GDK_PIXBUF_MODULEDIR="/usr/local/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+
 fi
 ##### End machine conditional stuff
 
