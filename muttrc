@@ -24,7 +24,7 @@ set smtp_url="smtp://keith@ices.utexas.edu:25/"
 set ssl_force_tls = yes
 set ssl_starttls = yes
 
-set sort=thread
+set sort=threads
 
 bind attach <return>    view-mailcap
 
