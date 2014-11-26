@@ -6,6 +6,7 @@ set record="=Sent"
 set postponed="=Drafts"
 
 # always use SSL when connecting to a server
+set ssl_starttls = yes
 set ssl_force_tls=yes
 # Don't wait to enter mailbox manually 
 unset imap_passive        
@@ -21,8 +22,6 @@ set header_cache=~/.hcache
 set net_inc=5
 
 set smtp_url="smtp://keith@ices.utexas.edu:25/"
-set ssl_force_tls = yes
-set ssl_starttls = yes
 
 set sort=threads
 
