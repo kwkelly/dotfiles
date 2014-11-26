@@ -158,6 +158,7 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
 	# brew caveat for gdk-pixbuf
 	export GDK_PIXBUF_MODULEDIR="/usr/local/lib/gdk-pixbuf-2.0/2.10.0/loaders"
 
+
 fi
 ##### End machine conditional stuff
 
