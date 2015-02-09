@@ -82,7 +82,15 @@ try
 	nmap <F8> :w<CR><leader>ll<leader>lv
 	let g:Tex_DefaultTargetFormat='pdf'
 	let g:Tex_MultipleCompileFormats='dvi,pdf'
-	let g:Tex_ViewRule_pdf='evince'
+	if has('unix')
+		let s:uname = system('uname -s')
+		if s:uname == "Darwin\n"
+			let g:Tex_ViewRule_pdf='open -a Preview'
+		else
+			let g:Tex_ViewRule_pdf='evince'
+			"let g:Tex_ViewRule_pdf='open -a Preview'
+		endif
+	endif
 	let Tex_FoldedSections=""
 	let Tex_FoldedEnvironments=""
 	let Tex_FoldedMisc=""
@@ -124,7 +132,7 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 
 " Ctrl-P options
 let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_cmd = 'CtrlPBuffer'
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
 

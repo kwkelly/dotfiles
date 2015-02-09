@@ -6,6 +6,7 @@ set record="=Sent"
 set postponed="=Drafts"
 
 # always use SSL when connecting to a server
+set ssl_starttls = yes
 set ssl_force_tls=yes
 # Don't wait to enter mailbox manually 
 unset imap_passive        
@@ -19,6 +20,8 @@ set timeout=10
 set header_cache=~/.hcache
 # Display download progress every 5K
 set net_inc=5
+
+set smtp_url="smtp://keith@ices.utexas.edu:25/"
 
 set sort=threads
 
@@ -55,3 +58,5 @@ unset resolve
 
 bind pager k previous-line
 bind pager j next-line
+
+set message_cachedir="~/.mutt_msgcache"

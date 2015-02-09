@@ -41,6 +41,13 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+function title {
+	echo -ne "\033]0;"$*"\007"
+}
+
+# allow forward stepping through history
+stty -ixon
 ##### Machine conditional
 
 if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then 
@@ -107,6 +114,7 @@ if [[ $HOSTNAME = *ronaldo* ]]; then
 	module load openmpi/1.4.4
 	module load autoconf
 	export PETSC_DIR=/org/groups/padas/packages/petsc-3.4.3-icc-complex
+	export FFTW_DIR=/org/groups/padas/packages/fftw/
 fi
 
 
@@ -132,6 +140,25 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
   # os x likes to make ctrl-o not do anything for some reason...
   stty discard undef
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
+	# use vimpager
+	export PAGER=vimpager
+	alias less=$PAGER
+	alias zless=$PAGER
+
+	# add colored output to gcc
+	export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+	# add matlab bin to path
+	export PATH=$PATH:/Applications/MATLAB_R2014a.app/bin
+
+	# vlc to path
+	alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
+	alias cvlc='vlc -I rc'
+	# brew caveat for gdk-pixbuf
+	export GDK_PIXBUF_MODULEDIR="/usr/local/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+
+
 fi
 
 if [[ $HOSTNAME = *stampede* ]] ;then
@@ -191,24 +218,6 @@ else
 	:
 fi
 
-
-# Start tmux if it is not only running. Start only one instance. Reattach if possible
-if hash tmux 2>/dev/null; then
-	if [[ $- == *i* ]] # check if interactive shell, if not, don't open tmux
-	then
-		if ! [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" || -n "$SSH_CONNECTION" ]]  # Don't open TMUX if connecting via ssh... needs fixin
-		then
-			if which tmux 2>&1 >/dev/null
-			then
-				#if not inside a tmux session, and if no session is started, start a new session
-				test -z "$TMUX" && (tmux new-session || tmux attach)
-			fi
-		fi
-	fi
-else
-#	echo "Can not find tmux"
-	:
-fi
 
 # Some aliases for some common things
 if ! ls --group-directories-first 1>/dev/null 2>&1; then
