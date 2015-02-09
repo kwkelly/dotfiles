@@ -133,6 +133,11 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
   stty discard undef
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 fi
+
+if [[ $HOSTNAME = *stampede* ]] ;then
+	export PATH=$PATH:/work/02370/kwkelly/local/bin
+	alias tmux='/work/02370/kwkelly/local/bin/tmux'
+fi
 ##### End machine conditional stuff
 
 # ex - archive extractor
