@@ -60,3 +60,5 @@ bind pager k previous-line
 bind pager j next-line
 
 set message_cachedir="~/.mutt_msgcache"
+
+set query_command = "abook --mutt-query '%s'"

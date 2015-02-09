@@ -19,10 +19,17 @@ Plugin 'jcf/vim-latex'
 Plugin 'fholgado/minibufexpl.vim'
 "
 Plugin 'kien/ctrlp.vim'
-"
+
 "Plugin 'Valloric/YouCompleteMe'
 "
-"Plugin 'scrooloose/syntastic'
+Plugin 'vim-scripts/Align'
+
+Plugin 'scrooloose/syntastic'
+
+Plugin 'bling/vim-airline'
+
+Plugin 'tpope/vim-fugitive'
+
 " " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " " Git plugin not hosted on GitHub
@@ -147,3 +154,10 @@ set background=dark
 " Spellcheck for emails
 autocmd FileType mail set spell
 autocmd FileType mail set fo+=aw
+
+" ctrl-l/n for next last buffer
+nmap <C-L> :bp<CR>
+nmap <C-N> :bn<CR>
+
+" for vimairline
+set laststatus=2

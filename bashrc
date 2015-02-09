@@ -151,12 +151,16 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
 
 	# add matlab bin to path
 	export PATH=$PATH:/Applications/MATLAB_R2014a.app/bin
+	# add sbin to path, homebrew suggested I do this
+	export PATH=/usr/local/sbin:$PATH
 
 	# vlc to path
 	alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 	alias cvlc='vlc -I rc'
 	# brew caveat for gdk-pixbuf
 	export GDK_PIXBUF_MODULEDIR="/usr/local/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+
+	alias vim='mvim -v'
 
 
 fi
@@ -230,3 +234,12 @@ else
 	alias df='df -h'                          # human-readable sizes
 	alias free='free -m'                      # show sizes in MB
 fi
+
+envfile="$HOME/.gnupg/gpg-agent.env"
+if [[ -e "$envfile" ]] && kill -0 $(grep GPG_AGENT_INFO "$envfile" | cut -d: -f 2) 2>/dev/null; then
+    eval "$(cat "$envfile")"
+else
+    eval "$(gpg-agent --daemon --enable-ssh-support --write-env-file "$envfile")"
+fi
+export GPG_AGENT_INFO  # the env file does not contain the export statement
+export SSH_AUTH_SOCK   # enable gpg-agent for ssh
