@@ -164,6 +164,11 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
 
 
 fi
+
+if [[ $HOSTNAME = *stampede* ]] ;then
+	export PATH=$PATH:/work/02370/kwkelly/local/bin
+	alias tmux='/work/02370/kwkelly/local/bin/tmux'
+fi
 ##### End machine conditional stuff
 
 # ex - archive extractor
