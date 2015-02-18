@@ -50,7 +50,7 @@ function title {
 stty -ixon
 ##### Machine conditional
 
-if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then 
+if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
 	# ~/.bashrc
 
 	# used for bash non-login shells.
@@ -119,7 +119,7 @@ fi
 
 
 if [[ $HOSTNAME = *curie* ]]; then
-	module load sl6 
+	module load sl6
 	module load autotools
 	module load paraview
 	module load matlab
@@ -162,12 +162,31 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
 
 	alias vim='mvim -v'
 
-
+	envfile="$HOME/.gnupg/gpg-agent.env"
+	if [[ -e "$envfile" ]] && kill -0 $(grep GPG_AGENT_INFO "$envfile" | cut -d: -f 2) 2>/dev/null; then
+		eval "$(cat "$envfile")"
+	else
+		eval "$(gpg-agent --daemon --enable-ssh-support --write-env-file "$envfile")"
+	fi
+	export GPG_AGENT_INFO  # the env file does not contain the export statement
+	export SSH_AUTH_SOCK   # enable gpg-agent for ssh
 fi
 
 if [[ $HOSTNAME = *stampede* ]] ;then
-	export PATH=$PATH:/work/02370/kwkelly/local/bin
-	alias tmux='/work/02370/kwkelly/local/bin/tmux'
+	module load intel/14.0.1.106
+	module load python/2.7.6
+	module load valgrind
+
+	# only works with intel 14
+	export PATH=$PATH:/work/02370/kwkelly/packages/{ranger}/bin
+	export PVFMM_DIR=/work/02370/kwkelly/packages/pvfmm/share/pvfmm
+	export PETSC_DIR=$WORK/packages/petsc-dev
+	export PETSC_ARCH=sandybridge-intel14
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib:$WORK/packages/elemental/lib
+
+	alias tmux='/work/02370/kwkelly/packages/tmux/local/bin/tmux'
+
+	export TERM=xterm-256color
 fi
 ##### End machine conditional stuff
 
@@ -196,7 +215,7 @@ ex ()
 }
 
 # prompt
-# The escape sequence \e[0;31m for instance, gets sucked up by the terminal, 
+# The escape sequence \e[0;31m for instance, gets sucked up by the terminal,
 # which in turn turns the following text red, but bash doesn't know that. So,
 # you have to tell bash that that sequence of characters should not
 # be counted in the prompt's length, and you do that by enclosing it in \[ \].
@@ -240,11 +259,3 @@ else
 	alias free='free -m'                      # show sizes in MB
 fi
 
-envfile="$HOME/.gnupg/gpg-agent.env"
-if [[ -e "$envfile" ]] && kill -0 $(grep GPG_AGENT_INFO "$envfile" | cut -d: -f 2) 2>/dev/null; then
-    eval "$(cat "$envfile")"
-else
-    eval "$(gpg-agent --daemon --enable-ssh-support --write-env-file "$envfile")"
-fi
-export GPG_AGENT_INFO  # the env file does not contain the export statement
-export SSH_AUTH_SOCK   # enable gpg-agent for ssh
