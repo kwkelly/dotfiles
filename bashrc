@@ -176,6 +176,7 @@ if [[ $HOSTNAME = *stampede* ]] ;then
 	module load intel/14.0.1.106
 	module load python/2.7.6
 	module load valgrind
+	module load git
 
 	# only works with intel 14
 	export PATH=$PATH:/work/02370/kwkelly/packages/{ranger}/bin
