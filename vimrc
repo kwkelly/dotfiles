@@ -24,7 +24,8 @@ Plugin 'kien/ctrlp.vim'
 "
 Plugin 'vim-scripts/Align'
 
-Plugin 'scrooloose/syntastic'
+"Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdcommenter'
 
 Plugin 'bling/vim-airline'
 
