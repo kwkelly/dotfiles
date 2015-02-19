@@ -172,7 +172,7 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
 	export SSH_AUTH_SOCK   # enable gpg-agent for ssh
 fi
 
-if [[ $HOSTNAME = *stampede* ]] ;then
+if [[ $HOSTNAME = *stampede* || $HOSTNAME = c*-* ]] ;then
 	module load intel/14.0.1.106
 	module load python/2.7.6
 	module load valgrind
@@ -182,7 +182,7 @@ if [[ $HOSTNAME = *stampede* ]] ;then
 	export PATH=$PATH:/work/02370/kwkelly/packages/{ranger}/bin
 	export PVFMM_DIR=/work/02370/kwkelly/packages/pvfmm/share/pvfmm
 	export PETSC_DIR=$WORK/packages/petsc-dev
-	export PETSC_ARCH=sandybridge-intel14
+	export PETSC_ARCH=sandybridge-elem
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib:$WORK/packages/elemental/lib
 
 	alias tmux='/work/02370/kwkelly/packages/tmux/local/bin/tmux'
