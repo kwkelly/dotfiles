@@ -63,7 +63,7 @@ if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
 
 	# first, source the system bashrc
 	if [ -r /etc/bashrc ]; then
-	    . /etc/bashrc
+			. /etc/bashrc
 	fi
 
 	# MAIL is used by mutt
@@ -183,7 +183,7 @@ if [[ $HOSTNAME = *stampede* || $HOSTNAME = c*-* ]] ;then
 	export PVFMM_DIR=/work/02370/kwkelly/packages/pvfmm/share/pvfmm
 	export PETSC_DIR=$WORK/packages/petsc-dev
 	export PETSC_ARCH=sandybridge-elem
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib:$WORK/packages/elemental/lib
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib:$WORK/packages/elemental/lib:/opt/apps/limic2/0.5.5/lib/
 
 	alias tmux='/work/02370/kwkelly/packages/tmux/local/bin/tmux'
 
@@ -223,40 +223,40 @@ ex ()
 # I also recommend using tput instead of hardcoding terminal escape sequences.
 PS1='\[\e[0;33m\]\u@\h\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
 
+
 # create ranger-cd and bind it to C-o if ranger is installed
 if hash ranger 2>/dev/null; then
-	function ranger-cd {
-		tempfile='/tmp/chosendir'
-		ranger --choosedir="$tempfile" "${@:-$(pwd)}"
-		test -f "$tempfile" &&
-		if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
-			cd -- "$(cat "$tempfile")"
-		fi
-		rm -f -- "$tempfile"
-	}
+  function ranger-cd {
+    tempfile='/tmp/chosendir'
+    ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+    test -f "$tempfile" &&
+    if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
+      cd -- "$(cat "$tempfile")"
+    fi
+    rm -f -- "$tempfile"
+  }
 
-	# This binds Ctrl-O to ranger-cd:
-	bind '"\C-o":"ranger-cd\C-m"'
+  # This binds Ctrl-O to ranger-cd:
+  bind '"\C-o":"ranger-cd\C-m"'
 else
 #	echo "Can not find ranger"
-	:
+  :
 fi
-
 
 # Some aliases for some common things
 if ! ls --group-directories-first 1>/dev/null 2>&1; then
-	alias grep='grep --color=tty -d skip'
-	alias cp="cp -i"                          # confirm before overwriting something
-	alias df='df -h'                          # human-readable sizes
-	alias free='free -m'                      # show sizes in MB
-	alias ls='ls -GFh'
+  alias grep='grep --color=tty -d skip'
+  alias cp="cp -i"                          # confirm before overwriting something
+  alias df='df -h'                          # human-readable sizes
+  alias free='free -m'                      # show sizes in MB
+  alias ls='ls -GFh'
 else
-	alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-	alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-	alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-	alias grep='grep --color=tty -d skip'
-	alias cp="cp -i"                          # confirm before overwriting something
-	alias df='df -h'                          # human-readable sizes
-	alias free='free -m'                      # show sizes in MB
+  alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+  alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+  alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+  alias grep='grep --color=tty -d skip'
+  alias cp="cp -i"                          # confirm before overwriting something
+  alias df='df -h'                          # human-readable sizes
+  alias free='free -m'                      # show sizes in MB
 fi
 
