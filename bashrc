@@ -172,16 +172,18 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
 	export SSH_AUTH_SOCK   # enable gpg-agent for ssh
 fi
 
-if [[ $HOSTNAME = *stampede* || $HOSTNAME = c*-* ]] ;then
+if [[ $TACC_DOMAIN = stampede  ]] ;then
 	module load intel/14.0.1.106
 	module load python/2.7.6
 	module load valgrind
 	module load git
+	module load cmake
 
 	# only works with intel 14
 	export PATH=$PATH:/work/02370/kwkelly/packages/{ranger}/bin
 	export PVFMM_DIR=/work/02370/kwkelly/packages/pvfmm/share/pvfmm
 	export PETSC_DIR=$WORK/packages/petsc-dev
+	export ELEMENTAL_DIR=$WORK/packages/elemental
 	export PETSC_ARCH=sandybridge-elem
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib:$WORK/packages/elemental/lib:/opt/apps/limic2/0.5.5/lib/
 
