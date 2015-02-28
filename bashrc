@@ -176,7 +176,7 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
 	export SSH_AUTH_SOCK   # enable gpg-agent for ssh
 fi
 
-if [[ $TACC_DOMAIN = stampede  ]] ;then
+if [[ $TACC_DOMAIN = stampede ]] ;then
 	module load intel/14.0.1.106
 	module load python/2.7.6
 	module load valgrind
@@ -195,6 +195,12 @@ if [[ $TACC_DOMAIN = stampede  ]] ;then
 
 	export TERM=xterm-256color
 fi
+
+
+if [[ $TACC_DOMAIN = lonestar ]] ;then
+	module swap intel gcc/4.7.1
+fi
+
 ##### End machine conditional stuff
 
 # ex - archive extractor
