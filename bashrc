@@ -141,6 +141,10 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
   stty discard undef
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
+	if [ -f $(brew --prefix)/etc/bash_completion ]; then
+		. $(brew --prefix)/etc/bash_completion
+	fi
+
 	# use vimpager
 	export PAGER=vimpager
 	alias less=$PAGER
