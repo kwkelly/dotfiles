@@ -103,6 +103,18 @@ try
 	let Tex_FoldedEnvironments=""
 	let Tex_FoldedMisc=""
 	let g:Tex_HotKeyMappings='eqnarray*,eqnarray,bmatrix'
+
+	" remap the alt macros to ctrl macros
+	" imap <C-b> <Plug>Tex_MathBF
+	imap <C-c> <Plug>Tex_MathCal
+	imap <C-l> <Plug>Tex_LeftRight
+	imap <C-i> <Plug>Tex_InsertItemOnThisLine
+
+	function! Tex_BM()
+		return "\<Left>\\bm{\<Right>}"
+	endfunction 
+
+	imap <C-b> <C-r>=Tex_BM()<CR>
 catch
 endtry
 
@@ -162,3 +174,5 @@ nmap <C-N> :bn<CR>
 
 " for vimairline
 set laststatus=2
+
+
