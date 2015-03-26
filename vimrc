@@ -117,13 +117,8 @@ try
 catch
 endtry
 
-"The original meaning of Ctrl-j is 'move [n] lines downward' (see |CTRL-j|). 
-"If you are accustomed to use the default and don't like these jump targets you can switch them off. 
-let g:BASH_Ctrl_j = 'off'
-
 nnoremap <tab> <C-w>l
 nnoremap <S-tab> <C-w>h
-
 
 " add an underline for the line that the cursor is on
 set cursorline
