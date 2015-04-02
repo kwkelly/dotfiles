@@ -20,11 +20,13 @@ Plugin 'fholgado/minibufexpl.vim'
 "
 Plugin 'kien/ctrlp.vim'
 
-"Plugin 'Valloric/YouCompleteMe'
-"
+if has('nvim')
+	Plugin 'Valloric/YouCompleteMe'
+	Plugin 'scrooloose/syntastic'
+endif
+
 Plugin 'vim-scripts/Align'
 
-"Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdcommenter'
 
 Plugin 'bling/vim-airline'
@@ -167,4 +169,4 @@ if has("gui_running")
 	set macmeta
 endif
 
-
+let g:syntastic_cpp_compiler = 'g++-4.9'
