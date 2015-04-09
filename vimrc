@@ -24,6 +24,8 @@ Plugin 'kien/ctrlp.vim'
 "
 Plugin 'vim-scripts/Align'
 
+Plugin 'vim-scripts/ctags.vim'
+
 "Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdcommenter'
 
@@ -162,3 +164,6 @@ nmap <C-N> :bn<CR>
 
 " for vimairline
 set laststatus=2
+
+" show function name
+let g:ctags_statusline=1
