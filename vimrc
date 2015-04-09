@@ -20,18 +20,24 @@ Plugin 'fholgado/minibufexpl.vim'
 "
 Plugin 'kien/ctrlp.vim'
 
-"Plugin 'Valloric/YouCompleteMe'
-"
+if has('nvim')
+	Plugin 'Valloric/YouCompleteMe'
+	Plugin 'scrooloose/syntastic'
+endif
+
 Plugin 'vim-scripts/Align'
 
 Plugin 'vim-scripts/ctags.vim'
 
-"Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdcommenter'
 
 Plugin 'bling/vim-airline'
 
 Plugin 'tpope/vim-fugitive'
+
+Plugin 'flazz/vim-colorschemes'
+
+Plugin 'chriskempson/base16-vim'
 
 " " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -77,11 +83,6 @@ set cinkeys-=0# " Indent #pragma lines as you would regular code
 set ruler " Always show info along bottom.
 au BufNewFile,BufRead *.txx set filetype=cpp
 
-"map <ScrollWheelUp> k
-"map <ScrollWheelDown> j
-map <ScrollWheelUp> 3<C-Y>
-map <ScrollWheelDown> 3<C-E>
-
 " Toggle numbers
 nnoremap <F3> :set nonumber!<CR>
 
@@ -105,25 +106,23 @@ try
 	let Tex_FoldedEnvironments=""
 	let Tex_FoldedMisc=""
 	let g:Tex_HotKeyMappings='eqnarray*,eqnarray,bmatrix'
+
+	" remap the alt macros to ctrl macros
+	" imap <C-b> <Plug>Tex_MathBF
+	imap <C-c> <Plug>Tex_MathCal
+	imap <C-l> <Plug>Tex_LeftRight
+	imap <C-i> <Plug>Tex_InsertItemOnThisLine
+
+	function! Tex_BM()
+		return "\<Left>\\bm{\<Right>}"
+	endfunction 
+
+	imap <C-b> <C-r>=Tex_BM()<CR>
 catch
 endtry
 
-" map hjkl to move window
-nmap <silent> <A-Up> :wincmd k<CR>
-nmap <silent> <A-Down> :wincmd j<CR>
-nmap <silent> <A-Left> :wincmd h<CR>
-nmap <silent> <A-Right> :wincmd l<CR>
-
-
-" Clang complete options
-try
-	let g:clang_user_options='|| exit 0'
-	let g:clang_complete_auto = 1
-	let g:clang_complete_copen = 1
-	let g:clang_library_path = "/usr/lib/"
-" nmap <C-P> :clang_close-preview<CR>
-catch
-endtry
+nnoremap <tab> <C-w>l
+nnoremap <S-tab> <C-w>h
 
 " add an underline for the line that the cursor is on
 set cursorline
@@ -159,11 +158,20 @@ autocmd FileType mail set spell
 autocmd FileType mail set fo+=aw
 
 " ctrl-l/n for next last buffer
-nmap <C-L> :bp<CR>
-nmap <C-N> :bn<CR>
+"nmap <C-L> :bp<CR>
+"nmap <C-N> :bn<CR>
 
 " for vimairline
 set laststatus=2
 
 " show function name
 let g:ctags_statusline=1
+
+if has("gui_running")
+	colorscheme jellybeans
+	set relativenumber
+	set transparency=5
+	set macmeta
+endif
+
+let g:syntastic_cpp_compiler = 'g++'

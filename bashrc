@@ -164,8 +164,6 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
 	# brew caveat for gdk-pixbuf
 	export GDK_PIXBUF_MODULEDIR="/usr/local/lib/gdk-pixbuf-2.0/2.10.0/loaders"
 
-	alias vim='mvim -v'
-
 	envfile="$HOME/.gnupg/gpg-agent.env"
 	if [[ -e "$envfile" ]] && kill -0 $(grep GPG_AGENT_INFO "$envfile" | cut -d: -f 2) 2>/dev/null; then
 		eval "$(cat "$envfile")"
