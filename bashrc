@@ -182,7 +182,7 @@ if [[ $TACC_DOMAIN = stampede ]] ;then
 	module load cmake
 
 	# only works with intel 14
-	export PATH=$PATH:/work/02370/kwkelly/packages/{ranger}/bin
+	export PATH=$PATH:/work/02370/kwkelly/packages/ranger/bin
 	export PVFMM_DIR=/work/02370/kwkelly/packages/pvfmm/share/pvfmm
 	export PETSC_DIR=$WORK/packages/petsc-dev
 	export ELEMENTAL_DIR=$WORK/packages/elemental

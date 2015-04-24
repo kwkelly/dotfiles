@@ -27,6 +27,8 @@ endif
 
 Plugin 'vim-scripts/Align'
 
+Plugin 'vim-scripts/ctags.vim'
+
 Plugin 'scrooloose/nerdcommenter'
 
 Plugin 'bling/vim-airline'
@@ -162,6 +164,9 @@ autocmd FileType mail set fo+=aw
 " for vimairline
 set laststatus=2
 
+" show function name
+let g:ctags_statusline=1
+
 if has("gui_running")
 	colorscheme jellybeans
 	set relativenumber
@@ -169,4 +174,4 @@ if has("gui_running")
 	set macmeta
 endif
 
-let g:syntastic_cpp_compiler = 'g++-4.9'
+let g:syntastic_cpp_compiler = 'g++'
