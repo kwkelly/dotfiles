@@ -50,6 +50,13 @@ function title {
 stty -ixon
 ##### Machine conditional
 
+
+# TACC_DOMAIN fix for maverick
+myhost=$(uname -n) 
+myhost=${myhost%.tacc.utexas.edu} 
+export TACC_DOMAIN=${myhost#*.}
+
+
 if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
 	# ~/.bashrc
 
@@ -107,6 +114,7 @@ if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
 	unset SSH_ASKPASS
 fi
 
+
 # just for ronaldo, may have to add more later
 if [[ $HOSTNAME = *ronaldo* ]]; then
 	module load intel/12.1
@@ -131,12 +139,12 @@ if [[ $HOSTNAME = *compute* ]]; then
 	module load openmpi
 fi
 
-if [[ $HOSTNAME = *darwin* ]] ;then
+if [[ $HOSTNAME = *darwin* ]]; then
   # os x likes to make ctrl-o not do anything for some reason...
   stty discard undef
 fi
 
-if [[ $HOSTNAME = *helmholtz* ]] ;then
+if [[ $HOSTNAME = *helmholtz* ]]; then
   # os x likes to make ctrl-o not do anything for some reason...
   stty discard undef
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
