@@ -121,8 +121,6 @@ try
 catch
 endtry
 
-nnoremap <tab> <C-w>l
-nnoremap <S-tab> <C-w>h
 
 " add an underline for the line that the cursor is on
 set cursorline
@@ -175,3 +173,12 @@ if has("gui_running")
 endif
 
 let g:syntastic_cpp_compiler = 'g++'
+
+nnoremap <expr> <tab> (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bn\<cr>" : "\<right>")
+nnoremap <expr> <S-tab> (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bp\<cr>" : "\<left>")
+
+nnoremap <right> <C-w>l
+nnoremap <left> <C-w>h
+
+
+set hidden
