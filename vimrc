@@ -174,11 +174,13 @@ endif
 
 let g:syntastic_cpp_compiler = 'g++'
 
-nnoremap <expr> <tab> (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bn\<cr>" : "\<right>")
-nnoremap <expr> <S-tab> (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bp\<cr>" : "\<left>")
+"nnoremap <expr> <tab> (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bn\<cr>" : "\<right>")
+"nnoremap <expr> <S-tab> (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bp\<cr>" : "\<left>")
 
-nnoremap <right> <C-w>l
-nnoremap <left> <C-w>h
+nnoremap <tab> <C-w>l
+nnoremap <S-tab> <C-w>h
 
+"nnoremap <up> :tabprevious<CR>
+"nnoremap <down>   :tabnext<CR>
 
 set hidden
