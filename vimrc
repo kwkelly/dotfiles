@@ -21,8 +21,8 @@ Plugin 'fholgado/minibufexpl.vim'
 Plugin 'kien/ctrlp.vim'
 
 if has('nvim')
-	Plugin 'Valloric/YouCompleteMe'
-	Plugin 'scrooloose/syntastic'
+	"Plugin 'Valloric/YouCompleteMe'
+	"Plugin 'scrooloose/syntastic'
 endif
 
 Plugin 'vim-scripts/Align'
@@ -35,9 +35,9 @@ Plugin 'bling/vim-airline'
 
 Plugin 'tpope/vim-fugitive'
 
-Plugin 'flazz/vim-colorschemes'
+"Plugin 'flazz/vim-colorschemes'
 
-Plugin 'chriskempson/base16-vim'
+"Plugin 'chriskempson/base16-vim'
 
 Plugin 'mbbill/undotree'
 
@@ -184,5 +184,8 @@ nnoremap <S-tab> <C-w>h
 
 "nnoremap <up> :tabprevious<CR>
 "nnoremap <down>   :tabnext<CR>
+nnoremap <S-U> :UndotreeToggle<cr>
 
 set hidden
+
+set ttyfast
