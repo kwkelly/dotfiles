@@ -39,6 +39,8 @@ Plugin 'flazz/vim-colorschemes'
 
 Plugin 'chriskempson/base16-vim'
 
+Plugin 'mbbill/undotree'
+
 " " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " " Git plugin not hosted on GitHub
