@@ -190,17 +190,63 @@ if [[ $TACC_DOMAIN = stampede ]] ;then
 	module load cmake
 
 	# only works with intel 14
-	export PATH=$PATH:/work/02370/kwkelly/packages/ranger/bin
-	export PVFMM_DIR=/work/02370/kwkelly/packages/pvfmm/share/pvfmm
+	export PATH=$PATH:$WORK/packages/ranger/bin
+	export PVFMM_DIR=$WORK/packages/pvfmm/share/pvfmm
 	export PETSC_DIR=$WORK/packages/petsc-dev
-	export ELEMENTAL_DIR=$WORK/packages/elemental
 	export PETSC_ARCH=sandybridge-elem
+	export ELEMENTAL_DIR=$WORK/packages/elemental
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib:$WORK/packages/elemental/lib:/opt/apps/limic2/0.5.5/lib/
 
 	alias tmux='/work/02370/kwkelly/packages/tmux/local/bin/tmux'
 
 	export TERM=xterm-256color
 fi
+
+
+if [[ $TACC_DOMAIN = maverick ]] ;then
+	module load intel/14.0.1.106
+	module load cmake
+	module load impi
+
+	export CC=icc
+	export CXX=icpc
+
+	# only works with intel 14
+	export PATH=$PATH:$WORK/packages/ranger/bin
+	export PVFMM_DIR=$WORK/packages/pvfmm/share/pvfmm
+	export PETSC_DIR=$WORK/packages/petsc
+	export PETSC_ARCH=
+	export ELEMENTAL_DIR=$WORK/packages/elemental
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib:$WORK/packages/elemental/lib:/opt/apps/limic2/0.5.5/lib/
+
+	alias tmux='$WORK/packages/tmux/bin/tmux'
+
+	export TERM=xterm-256color
+
+	unset SSH_ASKPASS
+
+	sq() {
+		squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0
+	}
+
+	sc() {
+		DATA=$(squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0)
+		echo "$DATA"
+		read -p "Which jobs to kill? " JOBS
+		for LINE in $JOBS; do
+			NUMLINES=$(echo "${DATA}" | wc -l)
+			if [ $LINE -le 0 ] || [ $LINE -gt $NUMLINES ] ; then
+				echo "Invalid selection of line $LINE"
+			else
+				LINE=$((LINE + 1))
+				JOBID=$(echo "$DATA" | sed "${LINE}q;d" | awk '{print $2}')
+				scancel ${JOBID}
+			fi
+		done
+	}
+
+fi
+
 
 
 if [[ $TACC_DOMAIN = lonestar ]] ;then
