@@ -39,6 +39,8 @@ Plugin 'tpope/vim-fugitive'
 
 "Plugin 'chriskempson/base16-vim'
 
+"Plugin 'altercation/vim-colors-solarized'
+
 Plugin 'mbbill/undotree'
 
 " " plugin from http://vim-scripts.org/vim/scripts.html
@@ -179,11 +181,15 @@ let g:syntastic_cpp_compiler = 'g++'
 "nnoremap <expr> <tab> (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bn\<cr>" : "\<right>")
 "nnoremap <expr> <S-tab> (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bp\<cr>" : "\<left>")
 
+" switch splits
 nnoremap <tab> <C-w>l
 nnoremap <S-tab> <C-w>h
 
-"nnoremap <up> :tabprevious<CR>
-"nnoremap <down>   :tabnext<CR>
+" switch buffers with space /bs
+nnoremap <Space> :bnext<cr>
+nnoremap <Backspace> :bprevious<cr>
+
+
 nnoremap <S-U> :UndotreeToggle<cr>
 
 set hidden
