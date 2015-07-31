@@ -183,7 +183,8 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 fi
 
 if [[ $TACC_DOMAIN = stampede ]] ;then
-	module load intel/14.0.1.106
+	module load intel/15.0.2
+	module lost impi/5.0.2
 	module load python/2.7.6
 	module load valgrind
 	module load git
@@ -200,6 +201,30 @@ if [[ $TACC_DOMAIN = stampede ]] ;then
 	alias tmux='/work/02370/kwkelly/packages/tmux/local/bin/tmux'
 
 	export TERM=xterm-256color
+
+	# show what I have in the queue
+	sq() {
+		squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0
+	}
+	
+	# cancel jobs from a list
+	sc() {
+		DATA=$(squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0)
+		echo "$DATA"
+		read -p "Which jobs to kill? " JOBS
+		for LINE in $JOBS; do
+			NUMLINES=$(echo "${DATA}" | wc -l)
+			if [ $LINE -le 0 ] || [ $LINE -gt $NUMLINES ] ; then
+				echo "Invalid selection of line $LINE"
+			else
+				LINE=$((LINE + 1))
+				JOBID=$(echo "$DATA" | sed "${LINE}q;d" | awk '{print $2}')
+				scancel ${JOBID}
+			fi
+		done
+	}
+
+
 fi
 
 
