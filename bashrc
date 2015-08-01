@@ -53,8 +53,10 @@ stty -ixon
 
 # TACC_DOMAIN fix for maverick
 myhost=$(uname -n) 
-myhost=${myhost%.tacc.utexas.edu} 
-export TACC_DOMAIN=${myhost#*.}
+if [[ $myhost == *tacc* ]]; then
+	myhost=${myhost%.tacc.utexas.edu} 
+	export TACC_DOMAIN=${myhost#*.}
+fi
 
 
 if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
@@ -154,6 +156,7 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 	if [ -f $(brew --prefix)/etc/bash_completion ]; then
 		. $(brew --prefix)/etc/bash_completion
 	fi
+	alias brewup='brew update && brew upgrade --all'
 
 	# use vimpager
 	export PAGER=vimpager
