@@ -184,8 +184,8 @@ fi
 
 if [[ $TACC_DOMAIN = stampede ]] ;then
 	module load intel/15.0.2
-	module lost impi/5.0.2
-	module load python/2.7.6
+	module load impi/5.0.2
+	#module load python/2.7.6
 	module load valgrind
 	module load git
 	module load cmake
