@@ -94,7 +94,7 @@ if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
 	# but it's not easy without priveleges.
 	PATH=$PATH:~/.local/bin:/workspace/local/bin
 	LIBRARY_PATH=$PATH:~/.local/lib:/workspace/local/lib
-	LD_LIBRARY_PATH=~$LD_LIBRARY_PATH:~/.local/lib:/workspace/local/lib:/org/groups/padas/packages/petsc-3.4.3-icc-complex/lib
+	LD_LIBRARY_PATH=~$LD_LIBRARY_PATH:~/.local/lib:/workspace/local/lib:/org/groups/padas/lula_packages/petsc-3.4.3-icc-complex/lib
 	PYTHONPATH=$PYTHONPATH:/workspace/local/lib/python2.6/site-packages
 
 	export LD_LIBRARY_PATH
@@ -113,8 +113,8 @@ if [[ $HOSTNAME = *ronaldo* ]]; then
 	module load mkl/12.1
 	module load openmpi/1.4.4
 	module load autoconf
-	export PETSC_DIR=/org/groups/padas/packages/petsc-3.4.3-icc-complex
-	export FFTW_DIR=/org/groups/padas/packages/fftw/
+	export PETSC_DIR=/org/groups/padas/lula_packages/petsc-3.4.3-icc-complex
+	export FFTW_DIR=/org/groups/padas/lula_packages/fftw/
 fi
 
 
@@ -123,6 +123,8 @@ if [[ $HOSTNAME = *curie* ]]; then
 	module load autotools
 	module load paraview
 	module load matlab
+
+	alias tmux='/workspace/local/bin/tmux'
 fi
 
 if [[ $HOSTNAME = *compute* ]]; then
