@@ -50,7 +50,14 @@ function title {
 stty -ixon
 ##### Machine conditional
 
-if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then 
+
+# TACC_DOMAIN fix for maverick
+myhost=$(uname -n) 
+myhost=${myhost%.tacc.utexas.edu} 
+export TACC_DOMAIN=${myhost#*.}
+
+
+if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
 	# ~/.bashrc
 
 	# used for bash non-login shells.
@@ -63,7 +70,7 @@ if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
 
 	# first, source the system bashrc
 	if [ -r /etc/bashrc ]; then
-	    . /etc/bashrc
+			. /etc/bashrc
 	fi
 
 	# MAIL is used by mutt
@@ -107,6 +114,7 @@ if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
 	unset SSH_ASKPASS
 fi
 
+
 # just for ronaldo, may have to add more later
 if [[ $HOSTNAME = *ronaldo* ]]; then
 	module load intel/12.1
@@ -119,7 +127,7 @@ fi
 
 
 if [[ $HOSTNAME = *curie* ]]; then
-	module load sl6 
+	module load sl6
 	module load autotools
 	module load paraview
 	module load matlab
@@ -133,15 +141,19 @@ if [[ $HOSTNAME = *compute* ]]; then
 	module load openmpi
 fi
 
-if [[ $HOSTNAME = *darwin* ]] ;then
+if [[ $HOSTNAME = *darwin* ]]; then
   # os x likes to make ctrl-o not do anything for some reason...
   stty discard undef
 fi
 
-if [[ $HOSTNAME = *helmholtz* ]] ;then
+if [[ $HOSTNAME = *helmholtz* ]]; then
   # os x likes to make ctrl-o not do anything for some reason...
   stty discard undef
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
+	if [ -f $(brew --prefix)/etc/bash_completion ]; then
+		. $(brew --prefix)/etc/bash_completion
+	fi
 
 	# use vimpager
 	export PAGER=vimpager
@@ -153,6 +165,8 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
 
 	# add matlab bin to path
 	export PATH=$PATH:/Applications/MATLAB_R2014a.app/bin
+	# add sbin to path, homebrew suggested I do this
+	export PATH=/usr/local/sbin:$PATH
 
 	# vlc to path
 	alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
@@ -160,8 +174,112 @@ if [[ $HOSTNAME = *helmholtz* ]] ;then
 	# brew caveat for gdk-pixbuf
 	export GDK_PIXBUF_MODULEDIR="/usr/local/lib/gdk-pixbuf-2.0/2.10.0/loaders"
 
+	envfile="$HOME/.gnupg/gpg-agent.env"
+	if [[ -e "$envfile" ]] && kill -0 $(grep GPG_AGENT_INFO "$envfile" | cut -d: -f 2) 2>/dev/null; then
+		eval "$(cat "$envfile")"
+	else
+		eval "$(gpg-agent --daemon --enable-ssh-support --write-env-file "$envfile")"
+	fi
+	export GPG_AGENT_INFO  # the env file does not contain the export statement
+	export SSH_AUTH_SOCK   # enable gpg-agent for ssh
+fi
+
+if [[ $TACC_DOMAIN = stampede ]] ;then
+	module load intel/15.0.2
+	module load impi/5.0.2
+	#module load python/2.7.6
+	module load valgrind
+	module load git
+	module load cmake
+
+	# only works with intel 14
+	export PATH=$PATH:$WORK/packages/ranger/bin
+	export PVFMM_DIR=$WORK/packages/pvfmm/share/pvfmm
+	export PETSC_DIR=$WORK/packages/petsc-dev
+	export PETSC_ARCH=sandybridge-elem
+	export ELEMENTAL_DIR=$WORK/packages/elemental
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib:$WORK/packages/elemental/lib:/opt/apps/limic2/0.5.5/lib/
+
+	alias tmux='/work/02370/kwkelly/packages/tmux/local/bin/tmux'
+
+	export TERM=xterm-256color
+
+	# show what I have in the queue
+	sq() {
+		squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0
+	}
+	
+	# cancel jobs from a list
+	sc() {
+		DATA=$(squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0)
+		echo "$DATA"
+		read -p "Which jobs to kill? " JOBS
+		for LINE in $JOBS; do
+			NUMLINES=$(echo "${DATA}" | wc -l)
+			if [ $LINE -le 0 ] || [ $LINE -gt $NUMLINES ] ; then
+				echo "Invalid selection of line $LINE"
+			else
+				LINE=$((LINE + 1))
+				JOBID=$(echo "$DATA" | sed "${LINE}q;d" | awk '{print $2}')
+				scancel ${JOBID}
+			fi
+		done
+	}
+
 
 fi
+
+
+if [[ $TACC_DOMAIN = maverick ]] ;then
+	module load intel/14.0.1.106
+	module load cmake
+	module load impi
+
+	export CC=icc
+	export CXX=icpc
+
+	# only works with intel 14
+	export PATH=$PATH:$WORK/packages/ranger/bin
+	export PVFMM_DIR=$WORK/packages/pvfmm/share/pvfmm
+	export PETSC_DIR=$WORK/packages/petsc
+	export PETSC_ARCH=
+	export ELEMENTAL_DIR=$WORK/packages/elemental
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib:$WORK/packages/elemental/lib:/opt/apps/limic2/0.5.5/lib/
+
+	alias tmux='$WORK/packages/tmux/bin/tmux'
+
+	export TERM=xterm-256color
+
+	unset SSH_ASKPASS
+
+	sq() {
+		squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0
+	}
+
+	sc() {
+		DATA=$(squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0)
+		echo "$DATA"
+		read -p "Which jobs to kill? " JOBS
+		for LINE in $JOBS; do
+			NUMLINES=$(echo "${DATA}" | wc -l)
+			if [ $LINE -le 0 ] || [ $LINE -gt $NUMLINES ] ; then
+				echo "Invalid selection of line $LINE"
+			else
+				LINE=$((LINE + 1))
+				JOBID=$(echo "$DATA" | sed "${LINE}q;d" | awk '{print $2}')
+				scancel ${JOBID}
+			fi
+		done
+	}
+
+fi
+
+
+
+if [[ $TACC_DOMAIN = lonestar ]] ;then
+	module swap intel gcc/4.7.1
+fi
+
 ##### End machine conditional stuff
 
 # ex - archive extractor
@@ -189,46 +307,47 @@ ex ()
 }
 
 # prompt
-# The escape sequence \e[0;31m for instance, gets sucked up by the terminal, 
+# The escape sequence \e[0;31m for instance, gets sucked up by the terminal,
 # which in turn turns the following text red, but bash doesn't know that. So,
 # you have to tell bash that that sequence of characters should not
 # be counted in the prompt's length, and you do that by enclosing it in \[ \].
 # I also recommend using tput instead of hardcoding terminal escape sequences.
 PS1='\[\e[0;33m\]\u@\h\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
 
+
 # create ranger-cd and bind it to C-o if ranger is installed
 if hash ranger 2>/dev/null; then
-	function ranger-cd {
-		tempfile='/tmp/chosendir'
-		ranger --choosedir="$tempfile" "${@:-$(pwd)}"
-		test -f "$tempfile" &&
-		if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
-			cd -- "$(cat "$tempfile")"
-		fi
-		rm -f -- "$tempfile"
-	}
+  function ranger-cd {
+    tempfile='/tmp/chosendir'
+    ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+    test -f "$tempfile" &&
+    if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
+      cd -- "$(cat "$tempfile")"
+    fi
+    rm -f -- "$tempfile"
+  }
 
-	# This binds Ctrl-O to ranger-cd:
-	bind '"\C-o":"ranger-cd\C-m"'
+  # This binds Ctrl-O to ranger-cd:
+  bind '"\C-o":"ranger-cd\C-m"'
 else
 #	echo "Can not find ranger"
-	:
+  :
 fi
-
 
 # Some aliases for some common things
 if ! ls --group-directories-first 1>/dev/null 2>&1; then
-	alias grep='grep --color=tty -d skip'
-	alias cp="cp -i"                          # confirm before overwriting something
-	alias df='df -h'                          # human-readable sizes
-	alias free='free -m'                      # show sizes in MB
-	alias ls='ls -GFh'
+  alias grep='grep --color=tty -d skip'
+  alias cp="cp -i"                          # confirm before overwriting something
+  alias df='df -h'                          # human-readable sizes
+  alias free='free -m'                      # show sizes in MB
+  alias ls='ls -GFh'
 else
-	alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-	alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-	alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-	alias grep='grep --color=tty -d skip'
-	alias cp="cp -i"                          # confirm before overwriting something
-	alias df='df -h'                          # human-readable sizes
-	alias free='free -m'                      # show sizes in MB
+  alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+  alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+  alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+  alias grep='grep --color=tty -d skip'
+  alias cp="cp -i"                          # confirm before overwriting something
+  alias df='df -h'                          # human-readable sizes
+  alias free='free -m'                      # show sizes in MB
 fi
+
