@@ -54,6 +54,7 @@ stty -ixon
 # TACC_DOMAIN fix for maverick
 myhost=$(uname -n) 
 if [[ $myhost == *tacc* ]]; then
+	loginnum=$(echo $myhost | sed 's/[^0-9]*//g')
 	myhost=${myhost%.tacc.utexas.edu} 
 	export TACC_DOMAIN=${myhost#*.}
 fi
@@ -317,7 +318,7 @@ ex ()
 if [ -z "$TACC_DOMAIN" ]; then
 	PS1='\[\e[0;33m\]\u@\h\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
 else
-	PS1='\[\e[0;33m\]\u@$TACC_DOMAIN\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
+	PS1='\[\e[0;33m\]\u@$TACC_DOMAIN[$loginnum]\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
 fi
 
 
