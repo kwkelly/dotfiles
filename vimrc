@@ -43,6 +43,8 @@ Plugin 'tpope/vim-fugitive'
 
 Plugin 'mbbill/undotree'
 
+Plugin 'unblevable/quick-scope'
+
 " " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " " Git plugin not hosted on GitHub
