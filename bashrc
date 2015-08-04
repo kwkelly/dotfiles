@@ -209,6 +209,9 @@ if [[ $TACC_DOMAIN = stampede ]] ;then
 
 	export TERM=xterm-256color
 
+	export CC=icc
+	export CXX=icpc
+
 	# show what I have in the queue
 	sq() {
 		squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0
