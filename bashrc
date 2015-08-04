@@ -53,8 +53,11 @@ stty -ixon
 
 # TACC_DOMAIN fix for maverick
 myhost=$(uname -n) 
-myhost=${myhost%.tacc.utexas.edu} 
-export TACC_DOMAIN=${myhost#*.}
+if [[ $myhost == *tacc* ]]; then
+	loginnum=$(echo $myhost | sed 's/[^0-9]*//g')
+	myhost=${myhost%.tacc.utexas.edu} 
+	export TACC_DOMAIN=${myhost#*.}
+fi
 
 
 if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
@@ -101,7 +104,7 @@ if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
 	# but it's not easy without priveleges.
 	PATH=$PATH:~/.local/bin:/workspace/local/bin
 	LIBRARY_PATH=$PATH:~/.local/lib:/workspace/local/lib
-	LD_LIBRARY_PATH=~$LD_LIBRARY_PATH:~/.local/lib:/workspace/local/lib:/org/groups/padas/packages/petsc-3.4.3-icc-complex/lib
+	LD_LIBRARY_PATH=~$LD_LIBRARY_PATH:~/.local/lib:/workspace/local/lib:/org/groups/padas/lula_packages/petsc-3.4.3-icc-complex/lib
 	PYTHONPATH=$PYTHONPATH:/workspace/local/lib/python2.6/site-packages
 
 	export LD_LIBRARY_PATH
@@ -121,8 +124,8 @@ if [[ $HOSTNAME = *ronaldo* ]]; then
 	module load mkl/12.1
 	module load openmpi/1.4.4
 	module load autoconf
-	export PETSC_DIR=/org/groups/padas/packages/petsc-3.4.3-icc-complex
-	export FFTW_DIR=/org/groups/padas/packages/fftw/
+	export PETSC_DIR=/org/groups/padas/lula_packages/petsc-3.4.3-icc-complex
+	export FFTW_DIR=/org/groups/padas/lula_packages/fftw/
 fi
 
 
@@ -131,6 +134,8 @@ if [[ $HOSTNAME = *curie* ]]; then
 	module load autotools
 	module load paraview
 	module load matlab
+
+	alias tmux='/workspace/local/bin/tmux'
 fi
 
 if [[ $HOSTNAME = *compute* ]]; then
@@ -152,6 +157,7 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 	if [ -f $(brew --prefix)/etc/bash_completion ]; then
 		. $(brew --prefix)/etc/bash_completion
 	fi
+	alias brewup='brew update && brew upgrade --all'
 
 	# use vimpager
 	export PAGER=vimpager
@@ -183,8 +189,10 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 fi
 
 if [[ $TACC_DOMAIN = stampede ]] ;then
-	module load intel/14.0.1.106
-	module load python/2.7.6
+	module load intel/15.0.2
+	module load impi/5.0.2
+	module load fftw3
+	#module load python/2.7.6
 	module load valgrind
 	module load git
 	module load cmake
@@ -200,6 +208,31 @@ if [[ $TACC_DOMAIN = stampede ]] ;then
 	alias tmux='/work/02370/kwkelly/packages/tmux/local/bin/tmux'
 
 	export TERM=xterm-256color
+
+	export CC=icc
+	export CXX=icpc
+
+	# show what I have in the queue
+	sq() {
+		squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0
+	}
+	
+	# cancel jobs from a list
+	sc() {
+		DATA=$(squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0)
+		echo "$DATA"
+		read -p "Which jobs to kill? " JOBS
+		for LINE in $JOBS; do
+			NUMLINES=$(echo "${DATA}" | wc -l)
+			if [ $LINE -le 0 ] || [ $LINE -gt $NUMLINES ] ; then
+				echo "Invalid selection of line $LINE"
+			else
+				LINE=$((LINE + 1))
+				JOBID=$(echo "$DATA" | sed "${LINE}q;d" | awk '{print $2}')
+				scancel ${JOBID}
+			fi
+		done
+	}
 fi
 
 
@@ -285,7 +318,12 @@ ex ()
 # you have to tell bash that that sequence of characters should not
 # be counted in the prompt's length, and you do that by enclosing it in \[ \].
 # I also recommend using tput instead of hardcoding terminal escape sequences.
-PS1='\[\e[0;33m\]\u@\h\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
+if [ -z "$TACC_DOMAIN" ]; then
+	PS1='\[\e[0;33m\]\u@\h\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
+else
+	PS1='\[\e[0;33m\]\u@$TACC_DOMAIN[$loginnum]\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
+fi
+
 
 
 # create ranger-cd and bind it to C-o if ranger is installed
