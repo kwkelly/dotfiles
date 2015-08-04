@@ -35,6 +35,8 @@ Plugin 'bling/vim-airline'
 
 Plugin 'tpope/vim-fugitive'
 
+Plugin 'moll/vim-bbye.git'
+
 "Plugin 'flazz/vim-colorschemes'
 
 "Plugin 'chriskempson/base16-vim'
@@ -43,7 +45,7 @@ Plugin 'tpope/vim-fugitive'
 
 Plugin 'mbbill/undotree'
 
-Plugin 'unblevable/quick-scope'
+"Plugin 'unblevable/quick-scope'
 
 " " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -197,3 +199,8 @@ nnoremap <S-U> :UndotreeToggle<cr>
 set hidden
 
 set ttyfast
+
+" recognize cmake files
+au BufNewFile,BufRead CMakeLists.txt set filetype=cmake
+au BufNewFile,BufRead *.cmake,*.cmake.in set filetype=cmake
+
