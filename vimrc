@@ -45,7 +45,7 @@ Plugin 'moll/vim-bbye.git'
 
 Plugin 'mbbill/undotree'
 
-Plugin 'unblevable/quick-scope'
+"Plugin 'unblevable/quick-scope'
 
 " " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
