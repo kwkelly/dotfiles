@@ -61,44 +61,20 @@ fi
 
 
 if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
-	# ~/.bashrc
-
-	# used for bash non-login shells.
-	# non-login shells include:
-	# * X sessions (xdm, gdm, kdm)
-	# * X Terminals (xterm, konsole, gnome-terminal)
-	# * running remote commands via ssh
-
-	# NOTE: some programs (ie, winscp) fail if this generates any output.
-
 	# first, source the system bashrc
 	if [ -r /etc/bashrc ]; then
 			. /etc/bashrc
 	fi
 
-	# MAIL is used by mutt
 	export MAIL=/mail/${USER}/Maildir/
 
-	# default printer: change this to suit your needs.
-	# pr3swd is the duplex queue on our black and white laser printer in the
-	# southwest quadrant of the 3rd floor of ICES.
 	export PRINTER=cp3se
 
-	# default editor: this is used by svn, etc.
-	# the only safe default for EDITOR is one which instructs the user how to quit.
-	# most users will change this to vim or emacs.
 	export EDITOR=vim
-
-	# uncomment this to use a prompt which indicates exit status
-	#if [ -r /etc/bash/prompt ]; then
-	#    . /etc/bash/prompt
-	#fi
-
 
 	# pine aliases
 	alias alpine='alpine -passfile ~/.pinepass'
 	alias pine='alpine -passfile ~/.pinepass'
-
 
 	# Add local dir to install location. Probably not the best way to do this,
 	# but it's not easy without priveleges.
