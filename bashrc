@@ -144,7 +144,7 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 	export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 	# add matlab bin to path
-	export PATH=$PATH:/Applications/MATLAB_R2014a.app/bin
+	export PATH=$PATH:/Applications/MATLAB_R2014a.app/bin:/Library/TeX/texbin
 	# add sbin to path, homebrew suggested I do this
 	export PATH=/usr/local/sbin:$PATH
 
@@ -338,3 +338,4 @@ else
   alias free='free -m'                      # show sizes in MB
 fi
 
+alias resource="source ~/.bashrc"
