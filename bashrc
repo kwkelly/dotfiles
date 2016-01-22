@@ -136,7 +136,7 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 	alias brewup='brew update && brew upgrade --all'
 
 	# use vimpager
-	export PAGER=vimpager
+	export PAGER=less
 	alias less=$PAGER
 	alias zless=$PAGER
 
@@ -268,12 +268,13 @@ fi
 # usage: ex <file>
 ex ()
 {
-  if [ -f $1 ] ; then
+  if [[ -f $1 ]] ; then
+		echo $1
     case $1 in
       *.tar.bz2)   tar xjf $1   ;;
       *.tar.gz)    tar xzf $1   ;;
       *.bz2)       bunzip2 $1   ;;
-      *.rar)       unrar x $1     ;;
+      *.rar)       unrar x "$1" ;;
       *.gz)        gunzip $1    ;;
       *.tar)       tar xf $1    ;;
       *.tbz2)      tar xjf $1   ;;
