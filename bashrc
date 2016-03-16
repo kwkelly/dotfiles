@@ -326,17 +326,6 @@ else
   :
 fi
 
-incognito()
-{
-	opts=$SHELLOPTS
-	if [[ $opts == *history* ]]
-	then
-		set +o history
-	else
-		set -o history
-	fi
-}
-
 # Some aliases for some common things
 if ! ls --group-directories-first 1>/dev/null 2>&1; then
   alias grep='grep --color=tty -d skip'
