@@ -8,7 +8,7 @@ Plug 'kien/ctrlp.vim'
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/ctags.vim'
 Plug 'scrooloose/nerdcommenter'
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'moll/vim-bbye'
@@ -16,6 +16,7 @@ Plug 'mbbill/undotree'
 Plug 'unblevable/quick-scope'
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'Valloric/YouCompleteMe'
+Plug 'jmcantrell/vim-virtualenv'
 " " All of your Plugins must be added before the following line
 call plug#end()            	 " required
 " "
@@ -54,6 +55,10 @@ nnoremap <S-tab> <C-w>h
 " switch buffers with space /bs
 nnoremap <Space> :bnext<cr>
 nnoremap <Backspace> :bprevious<cr>
+if has("persistent_undo")
+	set undodir=~/.undodir/
+	set undofile
+endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Latex (only load if it can find these)
@@ -86,7 +91,7 @@ try
 
 	function! Tex_BM()
 		return "\<Left>\\bm{\<Right>}"
-	endfunction 
+	endfunction
 
 	imap <C-b> <C-r>=Tex_BM()<CR>
 catch
@@ -146,17 +151,17 @@ let g:qs_enable = 0
 let g:qs_enable_char_list = [ 'f', 'F', 't', 'T' ]
 
 function! Quick_scope_selective(movement)
-    let needs_disabling = 0
-    if !g:qs_enable
-        QuickScopeToggle
-        redraw
-        let needs_disabling = 1
-    endif
-    let letter = nr2char(getchar())
-    if needs_disabling
-        QuickScopeToggle
-    endif
-    return a:movement . letter
+	let needs_disabling = 0
+	if !g:qs_enable
+		QuickScopeToggle
+		redraw
+		let needs_disabling = 1
+	endif
+	let letter = nr2char(getchar())
+	if needs_disabling
+		QuickScopeToggle
+	endif
+	return a:movement . letter
 endfunction
 
 for i in g:qs_enable_char_list
@@ -181,32 +186,32 @@ let g:ycm_python_binary_path=substitute(system("which python"), "\n$", "", "")
 
 " Add the virtualenv's site-packages to vim path. May be necessary for YCM
 if has('python')
-py << EOF
-import os.path
-import sys
-import vim
-if 'VIRTUAL_ENV' in os.environ:
-	project_base_dir = os.environ['VIRTUAL_ENV']
-	sys.path.insert(0, project_base_dir)
-	activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-	execfile(activate_this, dict(__file__=activate_this))
-EOF
-endif
+	py << EOF
+	import os.path
+	import sys
+	import vim
+	if 'VIRTUAL_ENV' in os.environ:
+		project_base_dir = os.environ['VIRTUAL_ENV']
+		sys.path.insert(0, project_base_dir)
+		activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+		execfile(activate_this, dict(__file__=activate_this))
+		EOF
+	endif
 
 
-" Add the virtualenv's site-packages to vim path
-if has('python3')
-py3 << EOF
-import os.path
-import sys
-import vim
-if 'VIRTUAL_ENV' in os.environ:
-	project_base_dir = os.environ['VIRTUAL_ENV']
-	sys.path.insert(0, project_base_dir)
-	activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-	#execfile(activate_this, dict(__file__=activate_this))
-	with open(activate_this) as f:
-		code = compile(f.read(), activate_this, 'exec')
-		exec(code,dict(__file__=activate_this))
-EOF
-endif
+	" Add the virtualenv's site-packages to vim path
+	if has('python3')
+		py3 << EOF
+		import os.path
+		import sys
+		import vim
+		if 'VIRTUAL_ENV' in os.environ:
+			project_base_dir = os.environ['VIRTUAL_ENV']
+			sys.path.insert(0, project_base_dir)
+			activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+			#execfile(activate_this, dict(__file__=activate_this))
+			with open(activate_this) as f:
+			code = compile(f.read(), activate_this, 'exec')
+			exec(code,dict(__file__=activate_this))
+			EOF
+		endif
