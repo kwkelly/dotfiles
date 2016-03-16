@@ -162,6 +162,10 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 	fi
 	export GPG_AGENT_INFO  # the env file does not contain the export statement
 	export SSH_AUTH_SOCK   # enable gpg-agent for ssh
+
+	# virtualenvwrapper stuff
+	export WORKON_HOME=$HOME/.virtualenvs
+	source $(which virtualenvwrapper.sh)
 fi
 
 if [[ $TACC_DOMAIN = stampede ]] ;then
@@ -321,6 +325,17 @@ else
 #	echo "Can not find ranger"
   :
 fi
+
+incognito()
+{
+	opts=$SHELLOPTS
+	if [[ $opts == *history* ]]
+	then
+		set +o history
+	else
+		set -o history
+	fi
+}
 
 # Some aliases for some common things
 if ! ls --group-directories-first 1>/dev/null 2>&1; then
