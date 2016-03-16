@@ -30,10 +30,16 @@ for file in $files; do
     ln -s $dir/$file ~/.$file
 done
 
-# install vundle if it is not there
-if [ ! -d ~/.vim/bundle/Vundle.vim ]; then
-	git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+#install vim-plug if it isn't there already
+if [ ! -d ~/.vim/autoload/plug.vim ]; then
+	curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
 # Install those plugins
-vim -c +PluginInstall +qa
+vim -c +PlugInstall +qa
+
+if [ -d ~/.vim/plugged/YouCompleteMe ]; then
+	echo "Compiling YCM"
+	cd ~/.vim/plugged/YouCompleteMe
+	./install.py
+fi

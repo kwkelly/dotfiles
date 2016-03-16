@@ -1,86 +1,39 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" " alternatively, pass a path where Vundle should install plugins
-" "call vundle#begin('~/some/path/here')
-"
-" " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-"
-" " The following are examples of different formats supported.
-"
-" " Keep Plugin commands between vundle#begin/end.
-" " plugin on GitHub repo
-Plugin 'jcf/vim-latex'
-"
-Plugin 'fholgado/minibufexpl.vim'
-"
-Plugin 'kien/ctrlp.vim'
-
-if has('nvim')
-	"Plugin 'Valloric/YouCompleteMe'
-	"Plugin 'scrooloose/syntastic'
-endif
-
-Plugin 'vim-scripts/Align'
-
-Plugin 'vim-scripts/ctags.vim'
-
-Plugin 'scrooloose/nerdcommenter'
-
-Plugin 'bling/vim-airline'
-
-Plugin 'tpope/vim-fugitive'
-
-Plugin 'moll/vim-bbye.git'
-
-"Plugin 'flazz/vim-colorschemes'
-
-"Plugin 'chriskempson/base16-vim'
-
-"Plugin 'altercation/vim-colors-solarized'
-
-Plugin 'mbbill/undotree'
-
-Plugin 'unblevable/quick-scope'
-
-" " plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" " Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
-" " git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-" " The sparkup vim script is in a subdirectory of this repo called vim.
-" " Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" " Avoid a name conflict with L9
-" Plugin 'user/L9', {'name': 'newL9'}
-"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-plug
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call plug#begin('~/.vim/plugged')
+Plug 'jcf/vim-latex'
+Plug 'fholgado/minibufexpl.vim'
+Plug 'kien/ctrlp.vim'
+Plug 'vim-scripts/Align'
+Plug 'vim-scripts/ctags.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'bling/vim-airline'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'moll/vim-bbye'
+Plug 'mbbill/undotree'
+Plug 'unblevable/quick-scope'
+Plug 'jmcantrell/vim-virtualenv'
+Plug 'Valloric/YouCompleteMe'
 " " All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" " To ignore plugin indent changes, instead use:
-" "filetype plugin on
+call plug#end()            	 " required
 " "
 " " Brief help
-" " :PluginList          - list configured plugins
-" " :PluginInstall(!)    - install (update) plugins
-" " :PluginSearch(!) foo - search (or refresh cache first) for foo
-" " :PluginClean(!)      - confirm (or auto-approve) removal of unused plugins
+" " :PlugList          - list configured plugins
+" " :PlugInstall(!)    - install (update) plugins
+" " :PlugSearch(!) foo - search (or refresh cache first) for foo
+" " :PlugClean(!)      - confirm (or auto-approve) removal of unused plugins
 " "
 " " see :h vundle for more details or wiki for FAQ
 " " Put your non-Plugin stuff after this line
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " some general stuff
-
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set number
 syntax on
 set autoindent
-set smartindent
 set mouse=a
 set shiftwidth=2
 set tabstop=2
@@ -89,12 +42,22 @@ set nohlsearch " Don't continue to highlight searched phrases.
 set incsearch " But do highlight as you type your search.
 set cinkeys-=0# " Indent #pragma lines as you would regular code
 set ruler " Always show info along bottom.
-au BufNewFile,BufRead *.txx set filetype=cpp
+set hidden " hides buffers instead of closing them
+set background=dark
+set relativenumber
+set cursorline " add an underline for the line that the cursor is on
+filetype plugin indent on
+hi CursorLine cterm=NONE ctermbg=black ctermfg=NONE
+" switch splits
+nnoremap <tab> <C-w>l
+nnoremap <S-tab> <C-w>h
+" switch buffers with space /bs
+nnoremap <Space> :bnext<cr>
+nnoremap <Backspace> :bprevious<cr>
 
-" Toggle numbers
-nnoremap <F3> :set nonumber!<CR>
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Latex (only load if it can find these)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 try
 	au FileType tex setlocal spell spelllang=en_us
 	let g:tex_flavor='latex'
@@ -129,12 +92,16 @@ try
 catch
 endtry
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" cpp
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au BufNewFile,BufRead *.txx set filetype=cpp
+au BufNewFile,BufRead CMakeLists.txt set filetype=cmake " recognize cmake files
+au BufNewFile,BufRead *.cmake,*.cmake.in set filetype=cmake
 
-" add an underline for the line that the cursor is on
-set cursorline
-hi CursorLine cterm=NONE ctermbg=black ctermfg=NONE
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " minibufferexplorer
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 try
 	let g:miniBufExplModSelTarget = 1
 catch
@@ -151,59 +118,25 @@ let g:ctrlp_cmd = 'CtrlPBuffer'
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
 
-
-set background=dark
-" hi Constant ctermfg=Yellow
-" hi Statement ctermfg=Green
-" hi LineNr ctermfg=LightYellow
-" 
-" hi Visual ctermbg=Black ctermfg=NONE
-
-" Spellcheck for emails
-autocmd FileType mail set spell
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" email
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType mail set spell " Spellcheck for emails
 autocmd FileType mail set fo+=aw
 
-" ctrl-l/n for next last buffer
-"nmap <C-L> :bp<CR>
-"nmap <C-N> :bn<CR>
-
-" for vimairline
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vimairline
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set laststatus=2
 
-" show function name
-let g:ctags_statusline=1
-
-if has("gui_running")
-	colorscheme jellybeans
-	set relativenumber
-	set transparency=5
-	set macmeta
-endif
-
-let g:syntastic_cpp_compiler = 'g++'
-
-"nnoremap <expr> <tab> (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bn\<cr>" : "\<right>")
-"nnoremap <expr> <S-tab> (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bp\<cr>" : "\<left>")
-
-" switch splits
-nnoremap <tab> <C-w>l
-nnoremap <S-tab> <C-w>h
-
-" switch buffers with space /bs
-nnoremap <Space> :bnext<cr>
-nnoremap <Backspace> :bprevious<cr>
-
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" undotree
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <S-U> :UndotreeToggle<cr>
 
-set hidden
-
-set ttyfast
-
-" recognize cmake files
-au BufNewFile,BufRead CMakeLists.txt set filetype=cmake
-au BufNewFile,BufRead *.cmake,*.cmake.in set filetype=cmake
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" QuickScope
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Insert into your .vimrc after quick-scope is loaded.
 " Obviously depends on <https://github.com/unblevable/quick-scope> being installed.
 
@@ -231,3 +164,49 @@ for i in g:qs_enable_char_list
 endfor
 
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" python
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+
+highlight BadWhitespace ctermbg=red guibg=darkred
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+set encoding=utf-8
+let python_highlight_all=1
+
+au BufNewFile,BufRead *.js, *.html, *.css set tabstop=2 softtabstop=2 shiftwidth=2
+
+let g:ycm_python_binary_path=substitute(system("which python"), "\n$", "", "")
+
+" Add the virtualenv's site-packages to vim path. May be necessary for YCM
+if has('python')
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+	project_base_dir = os.environ['VIRTUAL_ENV']
+	sys.path.insert(0, project_base_dir)
+	activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+	execfile(activate_this, dict(__file__=activate_this))
+EOF
+endif
+
+
+" Add the virtualenv's site-packages to vim path
+if has('python3')
+py3 << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+	project_base_dir = os.environ['VIRTUAL_ENV']
+	sys.path.insert(0, project_base_dir)
+	activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+	#execfile(activate_this, dict(__file__=activate_this))
+	with open(activate_this) as f:
+		code = compile(f.read(), activate_this, 'exec')
+		exec(code,dict(__file__=activate_this))
+EOF
+endif
