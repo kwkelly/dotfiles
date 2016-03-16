@@ -3,7 +3,6 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 Plug 'jcf/vim-latex'
-Plug 'fholgado/minibufexpl.vim'
 Plug 'kien/ctrlp.vim'
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/ctags.vim'
@@ -130,9 +129,10 @@ autocmd FileType mail set spell " Spellcheck for emails
 autocmd FileType mail set fo+=aw
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vimairline
+" vim-airline
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set laststatus=2
+let g:airline_powerline_fonts = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " undotree
@@ -186,32 +186,32 @@ let g:ycm_python_binary_path=substitute(system("which python"), "\n$", "", "")
 
 " Add the virtualenv's site-packages to vim path. May be necessary for YCM
 if has('python')
-	py << EOF
-	import os.path
-	import sys
-	import vim
-	if 'VIRTUAL_ENV' in os.environ:
-		project_base_dir = os.environ['VIRTUAL_ENV']
-		sys.path.insert(0, project_base_dir)
-		activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-		execfile(activate_this, dict(__file__=activate_this))
-		EOF
-	endif
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+	project_base_dir = os.environ['VIRTUAL_ENV']
+	sys.path.insert(0, project_base_dir)
+	activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+	execfile(activate_this, dict(__file__=activate_this))
+EOF
+endif
 
 
-	" Add the virtualenv's site-packages to vim path
-	if has('python3')
-		py3 << EOF
-		import os.path
-		import sys
-		import vim
-		if 'VIRTUAL_ENV' in os.environ:
-			project_base_dir = os.environ['VIRTUAL_ENV']
-			sys.path.insert(0, project_base_dir)
-			activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-			#execfile(activate_this, dict(__file__=activate_this))
-			with open(activate_this) as f:
-			code = compile(f.read(), activate_this, 'exec')
-			exec(code,dict(__file__=activate_this))
-			EOF
-		endif
+" Add the virtualenv's site-packages to vim path
+if has('python3')
+py3 << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+	project_base_dir = os.environ['VIRTUAL_ENV']
+	sys.path.insert(0, project_base_dir)
+	activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+	#execfile(activate_this, dict(__file__=activate_this))
+	with open(activate_this) as f:
+		code = compile(f.read(), activate_this, 'exec')
+		exec(code,dict(__file__=activate_this))
+EOF
+endif
