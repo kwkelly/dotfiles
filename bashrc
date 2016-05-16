@@ -147,6 +147,7 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 	export PATH=$PATH:/Applications/MATLAB_R2014a.app/bin:/Library/TeX/texbin
 	# add sbin to path, homebrew suggested I do this
 	export PATH=/usr/local/sbin:$PATH
+	export PATH=$PATH:~/bin
 
 	# vlc to path
 	alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
