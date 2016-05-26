@@ -6,7 +6,7 @@ Plug 'jcf/vim-latex'
 Plug 'kien/ctrlp.vim'
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/ctags.vim'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
 Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -130,8 +130,11 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 " Ctrl-P options
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPBuffer'
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
 let g:ctrlp_working_path_mode = '0'
 
 nmap <C-o> :CtrlP <return>
@@ -194,7 +197,7 @@ au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 set encoding=utf-8
 let python_highlight_all=1
 
-au BufNewFile,BufRead *.js, *.html, *.css set tabstop=2 softtabstop=2 shiftwidth=2
+au BufNewFile,BufRead *.js,*.html,*.css set tabstop=2 softtabstop=2 shiftwidth=2
 
 let g:ycm_python_binary_path=substitute(system("which python"), "\n$", "", "")
 let g:ycm_autoclose_preview_window_after_insertion=1
