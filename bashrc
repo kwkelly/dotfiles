@@ -343,4 +343,8 @@ else
   alias free='free -m'                      # show sizes in MB
 fi
 
+# virtualenvwrapper stuff
+export WORKON_HOME=$HOME/.virtualenvs
+source $(which virtualenvwrapper.sh)
+
 alias resource="source ~/.bashrc"
