@@ -6,7 +6,7 @@ Plug 'jcf/vim-latex'
 Plug 'kien/ctrlp.vim'
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/ctags.vim'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
 Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -16,6 +16,8 @@ Plug 'unblevable/quick-scope'
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'Valloric/YouCompleteMe'
 Plug 'jmcantrell/vim-virtualenv'
+Plug 'easymotion/vim-easymotion'
+Plug 'ervandew/supertab'
 " " All of your Plugins must be added before the following line
 call plug#end()            	 " required
 " "
@@ -31,6 +33,7 @@ call plug#end()            	 " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " some general stuff
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let mapleader="\<Space>"
 set number
 syntax on
 set autoindent
@@ -52,12 +55,20 @@ hi CursorLine cterm=NONE ctermbg=black ctermfg=NONE
 nnoremap <tab> <C-w>l
 nnoremap <S-tab> <C-w>h
 " switch buffers with space /bs
-nnoremap <Space> :bnext<cr>
-nnoremap <Backspace> :bprevious<cr>
+"nnoremap <Space> :bnext<cr>
+"nnoremap <Backspace> :bprevious<cr>
 if has("persistent_undo")
 	set undodir=~/.undodir/
 	set undofile
 endif
+
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>yy "+yy
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Latex (only load if it can find these)
@@ -119,8 +130,14 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 " Ctrl-P options
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPBuffer'
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+let g:ctrlp_working_path_mode = '0'
+
+nmap <C-o> :CtrlP <return>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " email
@@ -172,7 +189,7 @@ endfor
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " python
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent fileformat=unix
 
 highlight BadWhitespace ctermbg=red guibg=darkred
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
@@ -180,9 +197,10 @@ au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 set encoding=utf-8
 let python_highlight_all=1
 
-au BufNewFile,BufRead *.js, *.html, *.css set tabstop=2 softtabstop=2 shiftwidth=2
+au BufNewFile,BufRead *.js,*.html,*.css set tabstop=2 softtabstop=2 shiftwidth=2
 
 let g:ycm_python_binary_path=substitute(system("which python"), "\n$", "", "")
+let g:ycm_autoclose_preview_window_after_insertion=1
 
 " Add the virtualenv's site-packages to vim path. May be necessary for YCM
 if has('python')
