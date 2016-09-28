@@ -174,8 +174,9 @@ ex ()
 # you have to tell bash that that sequence of characters should not
 # be counted in the prompt's length, and you do that by enclosing it in \[ \].
 # I also recommend using tput instead of hardcoding terminal escape sequences.
-PS1='\[\e[0;33m\]\u@$TACC_DOMAIN[$loginnum]\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
 
+
+PS1='\[\e[0;33m\]\u@\h\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
 
 
 # create ranger-cd and bind it to C-o if ranger is installed
