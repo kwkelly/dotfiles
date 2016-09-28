@@ -48,82 +48,11 @@ function title {
 
 # allow forward stepping through history
 stty -ixon
+
+
+
 ##### Machine conditional
 
-
-# TACC_DOMAIN fix for maverick
-myhost=$(uname -n) 
-if [[ $myhost == *tacc* ]]; then
-	loginnum=$(echo $myhost | sed 's/[^0-9]*//g')
-	myhost=${myhost%.tacc.utexas.edu} 
-	export TACC_DOMAIN=${myhost#*.}
-fi
-
-
-if [[ "$HOSTNAME" = *ices* ]] || [[ "$HOSTNAME" = *compute* ]]; then
-	# first, source the system bashrc
-	if [ -r /etc/bashrc ]; then
-			. /etc/bashrc
-	fi
-
-	export MAIL=/mail/${USER}/Maildir/
-
-	export PRINTER=cp3se
-
-	export EDITOR=vim
-
-	# pine aliases
-	alias alpine='alpine -passfile ~/.pinepass'
-	alias pine='alpine -passfile ~/.pinepass'
-
-	# Add local dir to install location. Probably not the best way to do this,
-	# but it's not easy without priveleges.
-	PATH=$PATH:~/.local/bin:/workspace/local/bin
-	LIBRARY_PATH=$PATH:~/.local/lib:/workspace/local/lib
-	LD_LIBRARY_PATH=~$LD_LIBRARY_PATH:~/.local/lib:/workspace/local/lib:/org/groups/padas/lula_packages/petsc-3.4.3-icc-complex/lib
-	PYTHONPATH=$PYTHONPATH:/workspace/local/lib/python2.6/site-packages
-
-	export LD_LIBRARY_PATH
-	export PATH
-	export LIBRARY_PATH
-	export PYTHONPATH
-
-	module load git
-
-	unset SSH_ASKPASS
-fi
-
-
-# just for ronaldo, may have to add more later
-if [[ $HOSTNAME = *ronaldo* ]]; then
-	module load intel/12.1
-	module load mkl/12.1
-	module load openmpi/1.4.4
-	module load autoconf
-	export PETSC_DIR=/org/groups/padas/lula_packages/petsc-3.4.3-icc-complex
-	export FFTW_DIR=/org/groups/padas/lula_packages/fftw/
-fi
-
-
-if [[ $HOSTNAME = *curie* ]]; then
-	module load sl6
-	module load autotools
-	module load paraview
-	module load matlab
-
-	alias tmux='/workspace/local/bin/tmux'
-fi
-
-if [[ $HOSTNAME = *compute* ]]; then
-	module load intel/12.1
-	module load mkl
-	module load openmpi
-fi
-
-if [[ $HOSTNAME = *darwin* ]]; then
-  # os x likes to make ctrl-o not do anything for some reason...
-  stty discard undef
-fi
 
 if [[ $HOSTNAME = *helmholtz* ]]; then
   # os x likes to make ctrl-o not do anything for some reason...
@@ -169,108 +98,53 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 	source $(which virtualenvwrapper.sh)
 fi
 
-if [[ $TACC_DOMAIN = stampede ]] ;then
-	module load intel/15.0.2
-	module load impi/5.0.2
-	module load fftw3
-	#module load python/2.7.6
-	module load valgrind
-	module load git
-	module load cmake
 
-	# only works with intel 14
-	export PATH=$PATH:$WORK/packages/ranger/bin
-	export PVFMM_DIR=$WORK/packages/pvfmm/share/pvfmm
-	export PETSC_DIR=$WORK/packages/petsc-dev
-	export PETSC_ARCH=sandybridge-elem
-	export ELEMENTAL_DIR=$WORK/packages/elemental
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib:$WORK/packages/elemental/lib:/opt/apps/limic2/0.5.5/lib/
+if [[ $HOSTNAME = *pasteur* ]]; then
+  # os x likes to make ctrl-o not do anything for some reason...
+  stty discard undef
+	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
-	alias tmux='/work/02370/kwkelly/packages/tmux/local/bin/tmux'
+	if [ -f $(brew --prefix)/etc/bash_completion ]; then
+		. $(brew --prefix)/etc/bash_completion
+	fi
+	alias brewup='brew update && brew upgrade --all'
 
-	export TERM=xterm-256color
+	# use vimpager
+	export PAGER=less
+	alias less=$PAGER
+	alias zless=$PAGER
 
-	export CC=icc
-	export CXX=icpc
+	# add colored output to gcc
+	export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-	# show what I have in the queue
-	sq() {
-		squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0
-	}
-	
-	# cancel jobs from a list
-	sc() {
-		DATA=$(squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0)
-		echo "$DATA"
-		read -p "Which jobs to kill? " JOBS
-		for LINE in $JOBS; do
-			NUMLINES=$(echo "${DATA}" | wc -l)
-			if [ $LINE -le 0 ] || [ $LINE -gt $NUMLINES ] ; then
-				echo "Invalid selection of line $LINE"
-			else
-				LINE=$((LINE + 1))
-				JOBID=$(echo "$DATA" | sed "${LINE}q;d" | awk '{print $2}')
-				scancel ${JOBID}
-			fi
-		done
-	}
+	# add matlab bin to path
+	export PATH=$PATH:/Library/TeX/texbin
+
+	# brew caveat for gdk-pixbuf
+	export GDK_PIXBUF_MODULEDIR="/usr/local/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+
+	envfile="$HOME/.gnupg/gpg-agent.env"
+	if [[ -e "$envfile" ]] && kill -0 $(grep GPG_AGENT_INFO "$envfile" | cut -d: -f 2) 2>/dev/null; then
+		eval "$(cat "$envfile")"
+	else
+		eval "$(gpg-agent --daemon --enable-ssh-support --write-env-file "$envfile")"
+	fi
+	export GPG_AGENT_INFO  # the env file does not contain the export statement
+	export SSH_AUTH_SOCK   # enable gpg-agent for ssh
+
+	# virtualenvwrapper stuff
+	export WORKON_HOME=$HOME/.virtualenvs
+	source $(which virtualenvwrapper.sh)
+
+	export HOMEBREW_GITHUB_API_TOKEN="77fc915d13d8d9a4199c248dc565a1b222c2e4bb"
 fi
 
-
-if [[ $TACC_DOMAIN = maverick ]] ;then
-	module load intel/14.0.1.106
-	module load cmake
-	module load impi
-
-	export CC=icc
-	export CXX=icpc
-
-	# only works with intel 14
-	export PATH=$PATH:$WORK/packages/ranger/bin
-	export PVFMM_DIR=$WORK/packages/pvfmm/share/pvfmm
-	export PETSC_DIR=$WORK/packages/petsc
-	export PETSC_ARCH=
-	export ELEMENTAL_DIR=$WORK/packages/elemental
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib:$WORK/packages/elemental/lib:/opt/apps/limic2/0.5.5/lib/
-
-	alias tmux='$WORK/packages/tmux/bin/tmux'
-
-	export TERM=xterm-256color
-
-	unset SSH_ASKPASS
-
-	sq() {
-		squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0
-	}
-
-	sc() {
-		DATA=$(squeue -u kwkelly -o "%.18i %.9P %.25j %.2t %.10M %.6D %R" | nl -b a -v 0)
-		echo "$DATA"
-		read -p "Which jobs to kill? " JOBS
-		for LINE in $JOBS; do
-			NUMLINES=$(echo "${DATA}" | wc -l)
-			if [ $LINE -le 0 ] || [ $LINE -gt $NUMLINES ] ; then
-				echo "Invalid selection of line $LINE"
-			else
-				LINE=$((LINE + 1))
-				JOBID=$(echo "$DATA" | sed "${LINE}q;d" | awk '{print $2}')
-				scancel ${JOBID}
-			fi
-		done
-	}
-
-fi
-
-
-
-if [[ $TACC_DOMAIN = lonestar ]] ;then
-	module swap intel gcc/4.7.1
-fi
 
 ##### End machine conditional stuff
 
 # ex - archive extractor
 # usage: ex <file>
+# not useful because of dtrx
 ex ()
 {
   if [[ -f $1 ]] ; then
@@ -300,11 +174,7 @@ ex ()
 # you have to tell bash that that sequence of characters should not
 # be counted in the prompt's length, and you do that by enclosing it in \[ \].
 # I also recommend using tput instead of hardcoding terminal escape sequences.
-if [ -z "$TACC_DOMAIN" ]; then
-	PS1='\[\e[0;33m\]\u@\h\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
-else
-	PS1='\[\e[0;33m\]\u@$TACC_DOMAIN[$loginnum]\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
-fi
+PS1='\[\e[0;33m\]\u@$TACC_DOMAIN[$loginnum]\[\e[m\] \[\e[0;34m\]\w \$\[\e[m\] '
 
 
 
@@ -344,8 +214,5 @@ else
   alias free='free -m'                      # show sizes in MB
 fi
 
-# virtualenvwrapper stuff
-export WORKON_HOME=$HOME/.virtualenvs
-source $(which virtualenvwrapper.sh)
-
+# re-source the bashrc
 alias resource="source ~/.bashrc"

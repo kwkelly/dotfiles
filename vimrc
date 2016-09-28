@@ -194,7 +194,10 @@ au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 expandtab au
 highlight BadWhitespace ctermbg=red guibg=darkred
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
-set encoding=utf-8
+" neovim defaults to utf-8 and trying to change it after startup breaks it
+if !has('nvim')
+	set encoding=utf-8
+endif
 let python_highlight_all=1
 
 au BufNewFile,BufRead *.js,*.html,*.css set tabstop=2 softtabstop=2 shiftwidth=2
@@ -233,3 +236,5 @@ if 'VIRTUAL_ENV' in os.environ:
 		exec(code,dict(__file__=activate_this))
 EOF
 endif
+
+command! Resource source ~/.vimrc
