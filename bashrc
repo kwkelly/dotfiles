@@ -107,7 +107,7 @@ if [[ $HOSTNAME = *pasteur* ]]; then
 	if [ -f $(brew --prefix)/etc/bash_completion ]; then
 		. $(brew --prefix)/etc/bash_completion
 	fi
-	alias brewup='brew update && brew upgrade --all'
+	alias brewup='brew update && brew upgrade'
 
 	# use vimpager
 	export PAGER=less
