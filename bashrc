@@ -96,6 +96,8 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 	# virtualenvwrapper stuff
 	export WORKON_HOME=$HOME/.virtualenvs
 	source $(which virtualenvwrapper.sh)
+
+	[[ $- = *i* ]] && bind TAB:menu-complete
 fi
 
 
