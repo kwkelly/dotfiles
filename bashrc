@@ -137,6 +137,8 @@ if [[ $HOSTNAME = *pasteur* ]]; then
 	source $(which virtualenvwrapper.sh)
 
 	export HOMEBREW_GITHUB_API_TOKEN="77fc915d13d8d9a4199c248dc565a1b222c2e4bb"
+
+	[[ $- = *i* ]] && bind TAB:menu-complete
 fi
 
 
