@@ -4,6 +4,7 @@
 call plug#begin('~/.vim/plugged')
 Plug 'jcf/vim-latex'
 Plug 'kien/ctrlp.vim'
+Plug 'klen/python-mode'
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/ctags.vim'
 Plug 'tpope/vim-commentary'
@@ -18,6 +19,9 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'easymotion/vim-easymotion'
 Plug 'ervandew/supertab'
+Plug 'Raimondi/delimitMate'
+Plug 'derekwyatt/vim-scala'
+Plug 'ktvoelker/sbt-vim'
 " " All of your Plugins must be added before the following line
 call plug#end()            	 " required
 " "
@@ -196,6 +200,8 @@ au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 set encoding=utf-8
 let python_highlight_all=1
+au FileType python let b:delimitMate_expand_inside_quotes = 1
+
 
 au BufNewFile,BufRead *.js,*.html,*.css set tabstop=2 softtabstop=2 shiftwidth=2
 

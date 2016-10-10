@@ -163,6 +163,8 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 	fi
 	export GPG_AGENT_INFO  # the env file does not contain the export statement
 	export SSH_AUTH_SOCK   # enable gpg-agent for ssh
+	export EDITOR=nvim
+	alias e="$EDITOR"
 
 	# virtualenvwrapper stuff
 	export WORKON_HOME=$HOME/.virtualenvs
