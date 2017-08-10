@@ -84,22 +84,24 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 	# brew caveat for gdk-pixbuf
 	export GDK_PIXBUF_MODULEDIR="/usr/local/lib/gdk-pixbuf-2.0/2.10.0/loaders"
 
-	envfile="$HOME/.gnupg/gpg-agent.env"
-	if [[ -e "$envfile" ]] && kill -0 $(grep GPG_AGENT_INFO "$envfile" | cut -d: -f 2) 2>/dev/null; then
-		eval "$(cat "$envfile")"
-	else
-		eval "$(gpg-agent --daemon --enable-ssh-support --write-env-file "$envfile")"
-	fi
-	export GPG_AGENT_INFO  # the env file does not contain the export statement
-	export SSH_AUTH_SOCK   # enable gpg-agent for ssh
-	export EDITOR=nvim
-	alias e="$EDITOR"
+	# envfile="$HOME/.gnupg/gpg-agent.env"
+	# if [[ -e "$envfile" ]] && kill -0 $(grep GPG_AGENT_INFO "$envfile" | cut -d: -f 2) 2>/dev/null; then
+	# 	eval "$(cat "$envfile")"
+	# else
+	# 	eval "$(gpg-agent --daemon --enable-ssh-support --write-env-file "$envfile")"
+	# fi
+	# export GPG_AGENT_INFO  # the env file does not contain the export statement
+	# export SSH_AUTH_SOCK   # enable gpg-agent for ssh
+	# export EDITOR=nvim
+	# alias e="$EDITOR"
 
 	# virtualenvwrapper stuff
 	export WORKON_HOME=$HOME/.virtualenvs
+	export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 	source $(which virtualenvwrapper.sh)
 
-	[[ $- = *i* ]] && bind TAB:menu-complete
+
+	#[[ $- = *i* ]] && bind TAB:menu-complete
 fi
 
 
@@ -142,7 +144,7 @@ if [[ $HOSTNAME = *pasteur* ]]; then
 
 	export HOMEBREW_GITHUB_API_TOKEN="77fc915d13d8d9a4199c248dc565a1b222c2e4bb"
 
-	[[ $- = *i* ]] && bind TAB:menu-complete
+	#[[ $- = *i* ]] && bind TAB:menu-complete
 fi
 
 
