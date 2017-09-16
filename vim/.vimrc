@@ -23,6 +23,7 @@ Plug 'alvan/vim-closetag'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'lifepillar/vim-solarized8'
+Plug 'davidhalter/jedi-vim'
 Plug 'roxma/nvim-completion-manager'
 Plug 'roxma/python-support.nvim'
 Plug 'calebeby/ncm-css' "css completion
