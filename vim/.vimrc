@@ -27,7 +27,7 @@ Plug 'roxma/nvim-completion-manager'
 Plug 'roxma/python-support.nvim'
 Plug 'calebeby/ncm-css' "css completion
 Plug 'Shougo/neco-vim' "vimscript completion
-Plug 'roxma/nvim-cm-tern',  {'do': 'npm install'}
+Plug 'roxma/nvim-cm-tern',  {'do': 'npm install'} "js completion
 
 " " All of your Plugins must be added before the following line
 call plug#end()              " required
