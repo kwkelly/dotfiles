@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+
+# this script works similar to stow, but handles existing files and doesn't have a delete option
+
+import sys
+import os
+import pathlib
+
+def get_paths(root_path):
+    files = []
+    source_files = get_files(root_path)
+    for source_file in source_files:
+        source_file_abs = source_file.resolve()
+        dest_file = get_dest_path(source_file)
+        backup_file = dest_file.parents[0] / pathlib.Path(dest_file.name + '.orig');
+
+        files.append({
+            'source_file': source_file_abs,
+            'dest_file': dest_file,
+            'backup_file': backup_file
+            })
+    return files
+
+def get_files(root_path):
+    path_list = []
+    for dirpath, dirnames, filenames in os.walk(root_path):
+        for filename in filenames:
+            p = pathlib.Path(os.path.join(dirpath, filename))
+            if p.is_file():
+                path_list.append(p)
+    return path_list
+
+def get_dest_path(path):
+    # the paths in the dotfiles directory are meant to be analgous
+    # to paths in the home directory
+    return pathlib.Path('~').joinpath(*path.parts[1:]).expanduser()
+
+def create_backup(path_dict):
+    """
+    Takes the new link path to be created and creates a backup if necessary
+    """
+    dest_file = path_dict['dest_file']
+    backup_file = path_dict['backup_file']
+    if dest_file.is_file():
+        print(f"{dest_file} exists. creating a backup as {backup_file}")
+        os.rename(dest_file, backup_file)
+    else:
+        print(f"{dest_file} does not exist. no backup necessary")
+
+def check_sym_exists(path_dict):
+    source_file = path_dict['source_file']
+    dest_file = path_dict['dest_file']
+    if dest_file.is_symlink() and dest_file.resolve() == source_file:
+        print(f"Destination {dest_file} already points to source {source_file}. Skipping")
+        return True
+    else:
+        return False
+
+def create_link(path_dict):
+    """
+    Creates the link
+    """
+    source_file = path_dict['source_file']
+    dest_file = path_dict['dest_file']
+    if dest_file.is_file():
+        print(f"Destination {dest_file} exists. Doing nothing.")
+    else:
+        print(f"Creating symlink: {source_file} --> {dest_file}")
+        os.makedirs(dest_file.parents[0], exist_ok=True)
+        os.symlink(source_file, dest_file)
+
+if __name__ == "__main__":
+    try:
+        directory = sys.argv[1]
+    except IndexError:
+        print("No directory supplied. Aborting")
+        sys.exit(1)
+    if not pathlib.Path(directory).is_dir():
+        print(f"{directory} does not exist. Aborting")
+        sys.exit(1)
+    else:
+        print(f"Processing {directory}")
+        paths_dict = get_paths(directory)
+        for path_dict in paths_dict:
+            if check_sym_exists(path_dict):
+                continue
+            create_backup(path_dict)
+            create_link(path_dict)
