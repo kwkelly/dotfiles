@@ -88,7 +88,7 @@ if [[ $HOSTNAME = *helmholtz* ]]; then
 	if [[ -e "$envfile" ]] && kill -0 $(grep GPG_AGENT_INFO "$envfile" | cut -d: -f 2) 2>/dev/null; then
 		eval "$(cat "$envfile")"
 	else
-		eval "$(gpg-agent --daemon --enable-ssh-support --write-env-file "$envfile")"
+		eval "$(gpg-agent --daemon --enable-ssh-support)"
 	fi
 	export GPG_AGENT_INFO  # the env file does not contain the export statement
 	export SSH_AUTH_SOCK   # enable gpg-agent for ssh
@@ -120,27 +120,38 @@ if [[ $HOSTNAME = *pasteur* ]]; then
 	export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 	# add matlab bin to path
-	export PATH=$PATH:/Library/TeX/texbin
+	export PATH=$PATH:/Library/TeX/texbin:/usr/local/sbin
 
 	# brew caveat for gdk-pixbuf
 	export GDK_PIXBUF_MODULEDIR="/usr/local/lib/gdk-pixbuf-2.0/2.10.0/loaders"
 
-	envfile="$HOME/.gnupg/gpg-agent.env"
-	if [[ -e "$envfile" ]] && kill -0 $(grep GPG_AGENT_INFO "$envfile" | cut -d: -f 2) 2>/dev/null; then
-		eval "$(cat "$envfile")"
-	else
-		eval "$(gpg-agent --daemon --enable-ssh-support --write-env-file "$envfile")"
-	fi
-	export GPG_AGENT_INFO  # the env file does not contain the export statement
-	export SSH_AUTH_SOCK   # enable gpg-agent for ssh
+	# hmm maybe this is not needed? https://forums.freebsd.org/threads/51092/
+	# https://www.gnupg.org/faq/whats-new-in-2.1.html#autostart
+	#
+	# envfile="$HOME/.gnupg/gpg-agent.env"
+	# if [[ -e "$envfile" ]] && kill -0 $(grep GPG_AGENT_INFO "$envfile" | cut -d: -f 2) 2>/dev/null; then
+	# 	eval "$(cat "$envfile")"
+	# else
+	# 	eval "$(gpg-agent --daemon --enable-ssh-support)"
+	# fi
+	# export GPG_AGENT_INFO  # the env file does not contain the export statement
+	# export SSH_AUTH_SOCK   # enable gpg-agent for ssh
 
 	# virtualenvwrapper stuff
 	export WORKON_HOME=$HOME/.virtualenvs
+	#If Python could not import the module virtualenvwrapper.hook_loader,
+	#check that virtualenvwrapper has been installed for
+	#VIRTUALENVWRAPPER_PYTHON=/usr/bin/python and that PATH is
+	#set properly.
+	export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 	source $(which virtualenvwrapper.sh)
 
 	export HOMEBREW_GITHUB_API_TOKEN="77fc915d13d8d9a4199c248dc565a1b222c2e4bb"
 
-	[[ $- = *i* ]] && bind TAB:menu-complete
+	# [[ $- = *i* ]] && bind TAB:menu-complete
+
+	# stop throwing away ctrl-o please
+	stty discard undef
 fi
 
 
