@@ -56,7 +56,8 @@ set smartcase " don't ignore capitals in searches
 set cinkeys-=0# " Indent #pragma lines as you would regular code
 set hidden " hides buffers instead of closing them
 set background=dark
-set relativenumber
+colorscheme solarized8_dark
+set relativenumber number
 set cursorline " add an underline for the line that the cursor is on
 set ruler
 set tabstop=4
@@ -68,6 +69,8 @@ if has("persistent_undo")
     set undodir=~/.undodir/
     set undofile
 endif
+" re-soruce the vimrc to update
+command! Resource source ~/.vimrc
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " netrw
@@ -123,31 +126,32 @@ let g:airline_powerline_fonts = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <S-U> :UndotreeToggle<cr>
 
-command! Resource source ~/.vimrc
-
-let g:syntastic_javascript_checkers = ['eslint']
-
-let g:jsx_ext_required = 0
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ultisnips
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsJumpForwardTrigger="<c-f>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 
-" inoremap <silent><expr> <Tab>
-"     \ pumvisible() ? "\<C-n>" : deoplete#manual_complete()
-" inoremap <silent><expr> <TAB>
-"     \ pumvisible() ? "\<C-n>" :
-"     \ <SID>check_back_space() ? "\<TAB>" :
-"     \ deoplete#mappings#manual_complete()
-" function! s:check_back_space() abort "{{{
-"     let col = col('.') - 1
-"     return !col || getline('.')[col - 1]  =~ '\s'
-" endfunction"}}}
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" nvim-completion-manager
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" Close the documentation window when completion is done
-"autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
-colorscheme solarized8_dark
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" syntastic
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:syntastic_javascript_checkers = ['eslint']
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" jsx
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:jsx_ext_required = 0
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" tern
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]

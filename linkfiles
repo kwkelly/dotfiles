@@ -41,7 +41,7 @@ def create_backup(path_dict):
     """
     dest_file = path_dict['dest_file']
     backup_file = path_dict['backup_file']
-    if dest_file.is_file():
+    if dest_file.is_file() or dest_file.is_symlink():
         print(f"{dest_file} exists. creating a backup as {backup_file}")
         os.rename(dest_file, backup_file)
     else:
