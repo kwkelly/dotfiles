@@ -4,7 +4,7 @@
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'jcf/vim-latex'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/ctags.vim'
 Plug 'tpope/vim-commentary'
@@ -17,19 +17,12 @@ Plug 'mbbill/undotree'
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'easymotion/vim-easymotion'
 Plug 'scrooloose/syntastic'
-Plug 'digitaltoad/vim-pug'
 Plug 'jiangmiao/auto-pairs'
 Plug 'alvan/vim-closetag'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'kchmck/vim-coffee-script'
-Plug 'lifepillar/vim-solarized8'
-Plug 'davidhalter/jedi-vim'
-Plug 'roxma/nvim-completion-manager'
-Plug 'roxma/python-support.nvim'
-Plug 'calebeby/ncm-css' "css completion
-Plug 'Shougo/neco-vim' "vimscript completion
-Plug 'roxma/nvim-cm-tern',  {'do': 'npm install'} "js completion
+Plug 'Shougo/denite.nvim'
+Plug 'leafgarland/typescript-vim'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'morhetz/gruvbox'
 
 " " All of your Plugins must be added before the following line
 call plug#end()              " required
@@ -56,7 +49,8 @@ set smartcase " don't ignore capitals in searches
 set cinkeys-=0# " Indent #pragma lines as you would regular code
 set hidden " hides buffers instead of closing them
 set background=dark
-colorscheme solarized8_dark
+colorscheme gruvbox
+let g:airline_theme='gruvbox'
 set relativenumber number
 set cursorline " add an underline for the line that the cursor is on
 set ruler
@@ -64,6 +58,7 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
+inoremap jk <esc>
 hi CursorLine cterm=NONE ctermbg=black ctermfg=NONE
 if has("persistent_undo")
     set undodir=~/.undodir/
@@ -71,6 +66,7 @@ if has("persistent_undo")
 endif
 " re-soruce the vimrc to update
 command! Resource source ~/.vimrc
+autocmd FileType netrw setl bufhidden=wipe
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " netrw
@@ -98,7 +94,7 @@ vmap <Leader>P "+P
 " os x likes to make backspace not work for some reason... hopefully this won't
 " screw anything else up
 set backspace=indent,eol,start
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*/.git/*     " MacOSX/Linux
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ctrl-p
@@ -106,7 +102,7 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPBuffer'
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules)$',
   \ 'file': '\v\.(exe|so|dll)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
@@ -116,10 +112,21 @@ let g:ctrlp_working_path_mode = '0'
 nmap <C-o> :CtrlP <return>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Denite 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+            \ [ '.git/', '.ropeproject/', '__pycache__/',
+            \ 'venv/', 'images/', '*.min.*', 'img/', 'fonts/',
+            \ 'node_modules/'])
+
+call denite#custom#var('grep', 'recursive_opts', ['-R', '--exclude-dir={node_modules}'])
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-airline
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set laststatus=2
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " undotree
@@ -127,31 +134,11 @@ let g:airline_powerline_fonts = 1
 nnoremap <S-U> :UndotreeToggle<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ultisnips
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:UltiSnipsExpandTrigger="<c-e>"
-let g:UltiSnipsJumpForwardTrigger="<c-f>"
-let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" nvim-completion-manager
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " syntastic
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute " ,"trimming empty \<", "inserting implicit ", "unescaped \&" , "lacks \"action", "lacks value", "lacks \"src", "is not recognized!", "discarding unexpected", "replacing obsolete "]
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" jsx
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:jsx_ext_required = 0
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" tern
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
+" close buffer but not window
+" https://stackoverflow.com/questions/4465095/vim-delete-buffer-without-losing-the-split-window
+command Bd bp\|bd \#
