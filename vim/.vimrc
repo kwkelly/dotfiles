@@ -1,4 +1,4 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
@@ -19,10 +19,17 @@ Plug 'easymotion/vim-easymotion'
 Plug 'scrooloose/syntastic'
 Plug 'jiangmiao/auto-pairs'
 Plug 'alvan/vim-closetag'
-Plug 'Shougo/denite.nvim'
+" Plug 'Shougo/denite.nvim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
-Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
+Plug 'SirVer/UltiSnips'
+Plug 'honza/vim-snippets'
+Plug 'rbgrouleff/bclose.vim'
+Plug 'ipod825/vim-netranger'
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 
 " " All of your Plugins must be added before the following line
 call plug#end()              " required
@@ -39,6 +46,7 @@ call plug#end()              " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " some general stuff
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+filetype plugin indent on
 let mapleader="\<Space>"
 set mouse=a
 set shiftwidth=2
@@ -54,10 +62,6 @@ let g:airline_theme='gruvbox'
 set relativenumber number
 set cursorline " add an underline for the line that the cursor is on
 set ruler
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
 inoremap jk <esc>
 hi CursorLine cterm=NONE ctermbg=black ctermfg=NONE
 if has("persistent_undo")
@@ -114,12 +118,12 @@ nmap <C-o> :CtrlP <return>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Denite 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
-            \ [ '.git/', '.ropeproject/', '__pycache__/',
-            \ 'venv/', 'images/', '*.min.*', 'img/', 'fonts/',
-            \ 'node_modules/'])
+" call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+"             \ [ '.git/', '.ropeproject/', '__pycache__/',
+"             \ 'venv/', 'images/', '*.min.*', 'img/', 'fonts/',
+"             \ 'node_modules/'])
 
-call denite#custom#var('grep', 'recursive_opts', ['-R', '--exclude-dir={node_modules}'])
+" call denite#custom#var('grep', 'recursive_opts', ['-R', '--exclude-dir={node_modules}'])
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-airline
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -139,6 +143,25 @@ nnoremap <S-U> :UndotreeToggle<cr>
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute " ,"trimming empty \<", "inserting implicit ", "unescaped \&" , "lacks \"action", "lacks value", "lacks \"src", "is not recognized!", "discarding unexpected", "replacing obsolete "]
 
-" close buffer but not window
-" https://stackoverflow.com/questions/4465095/vim-delete-buffer-without-losing-the-split-window
-command Bd bp\|bd \#
+" use ranger instead of netrw
+let g:ranger_replace_netrw = 1
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" coc
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" FZF
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

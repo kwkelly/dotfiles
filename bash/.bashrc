@@ -237,3 +237,5 @@ fi
 
 # re-source the bashrc
 alias resource="source ~/.bashrc"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
