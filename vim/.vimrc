@@ -4,7 +4,6 @@
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'jcf/vim-latex'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/ctags.vim'
 Plug 'tpope/vim-commentary'
@@ -19,7 +18,6 @@ Plug 'easymotion/vim-easymotion'
 Plug 'scrooloose/syntastic'
 Plug 'jiangmiao/auto-pairs'
 Plug 'alvan/vim-closetag'
-" Plug 'Shougo/denite.nvim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'leafgarland/typescript-vim'
@@ -28,7 +26,6 @@ Plug 'gruvbox-community/gruvbox'
 Plug 'SirVer/UltiSnips'
 Plug 'honza/vim-snippets'
 Plug 'rbgrouleff/bclose.vim'
-Plug 'ipod825/vim-netranger'
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 
 " " All of your Plugins must be added before the following line
@@ -103,17 +100,17 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*/.git/*     " MacOSX/
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ctrl-p
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlPBuffer'
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules)$',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
-let g:ctrlp_working_path_mode = '0'
+" let g:ctrlp_map = '<c-p>'
+"let g:ctrlp_cmd = 'CtrlPBuffer'
+"let g:ctrlp_custom_ignore = {
+"  \ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules)$',
+"  \ 'file': '\v\.(exe|so|dll)$',
+"  \ 'link': 'some_bad_symbolic_links',
+"  \ }
+"let g:ctrlp_working_path_mode = '0'
 
-"makes ctrl o search for files, not buffers
-nmap <C-o> :CtrlP <return>
+""makes ctrl o search for files, not buffers
+"nmap <C-o> :CtrlP <return>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Denite 
@@ -144,7 +141,7 @@ let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute " ,"trimming empty \<", "inserting implicit ", "unescaped \&" , "lacks \"action", "lacks value", "lacks \"src", "is not recognized!", "discarding unexpected", "replacing obsolete "]
 
 " use ranger instead of netrw
-let g:ranger_replace_netrw = 1
+" let g:ranger_replace_netrw = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " coc
@@ -165,3 +162,5 @@ nnoremap <silent> K :call <SID>show_documentation()<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FZF
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap <C-o> :Files<CR>
+nmap <C-p> :Buffers<CR>
